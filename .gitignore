@@ -1,0 +1,6 @@
+# Original source JPEGs (converted to WebP)
+*.jpeg
+*.jpg
+
+# Claude internal memory
+.claude/

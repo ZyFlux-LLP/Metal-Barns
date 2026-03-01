@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metal Barns India | Pre-Engineered Steel Buildings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+
+    <style>
+        /* --- RESET & TYPOGRAPHY --- */
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;700;800&display=swap');
+
+        :root {
+            --bg-color: #f4f4f6;
+            --text-main: #0a0a0a;
+            --text-muted: #555555;
+            --card-bg: #ffffff;
+            --brand-blue: #0A4B8F;
+            --font-main: 'Manrope', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: initial; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            /* Prevent scroll during loader */
+            height: 100vh; overflow: hidden;
+        }
+
+        body.loaded { height: auto; overflow: visible; overflow-x: hidden; }
+
+        /* --- DARK METALLIC NOISE LOADER --- */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #2b2b2b 0%, #111111 50%, #1a1a1a 100%);
+            z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+
+        .loader::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.12"/%3E%3C/svg%3E');
+            pointer-events: none; mix-blend-mode: overlay;
+        }
+
+        .loader-logo-wrapper { overflow: hidden; position: relative; z-index: 2; margin-bottom: 2rem; }
+        .loader-logo { height: auto; width: 250px; max-width: 80vw; transform: translateY(100%); opacity: 0; border-radius: 4px; }
+
+        .loader-bar-wrapper {
+            width: 250px; height: 2px; background: rgba(255,255,255,0.1);
+            position: relative; z-index: 2; overflow: hidden; max-width: 80vw;
+        }
+        .loader-bar {
+            width: 0%; height: 100%; background: var(--brand-blue);
+            box-shadow: 0 0 15px rgba(10, 75, 143, 0.8);
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1.5rem 4vw;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; transition: background 0.3s ease, padding 0.3s ease;
+        }
+
+        .nav-scrolled { background: rgba(255,255,255,0.98); padding: 1rem 4vw; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .nav-scrolled .nav-links a { color: var(--text-main); }
+        .nav-scrolled .nav-links a::after { background: var(--brand-blue); }
+        .nav-scrolled .hamburger-line { background: var(--text-main); }
+
+        .nav-logo img { height: 40px; display: block; border-radius: 4px; }
+
+        .nav-links { display: flex; gap: 3rem; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: #fff; transition: color 0.3s ease; }
+        .nav-links a { color: inherit; text-decoration: none; position: relative; cursor: pointer; }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0;
+            background: #fff; transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Mobile Menu */
+        .hamburger { display: none; cursor: pointer; z-index: 102; }
+        .hamburger-line { width: 25px; height: 2px; background: #fff; margin: 5px 0; transition: 0.4s; }
+
+        .mobile-menu {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #050505;
+            z-index: 101; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            gap: 2rem; transform: translateY(-100%); transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-menu a { color: #fff; font-size: 2rem; font-weight: 800; text-transform: uppercase; text-decoration: none; }
+
+        /* Hamburger Active State */
+        .hamburger.active .hamburger-line:nth-child(1) { transform: rotate(-45deg) translate(-5px, 5px); background: #fff; }
+        .hamburger.active .hamburger-line:nth-child(2) { opacity: 0; }
+        .hamburger.active .hamburger-line:nth-child(3) { transform: rotate(45deg) translate(-5px, -5px); background: #fff; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center;
+            padding: 0 4vw; position: relative; overflow: hidden; background: #000;
+        }
+
+        .hero-slideshow { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+        .hero-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transform: scale(1.1);
+            transition: opacity 2s ease-in-out, transform 8s linear;
+        }
+        .hero-slide.active { opacity: 0.75; transform: scale(1); }
+
+        .hero-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 100%);
+            z-index: 2; pointer-events: none;
+        }
+
+        .hero-content-wrapper { position: relative; z-index: 3; max-width: 1200px; margin-top: 4rem; }
+
+        /* Masked Text Reveal Utility */
+        .text-mask { overflow: hidden; display: inline-block; vertical-align: top; }
+        .text-mask span { display: inline-block; transform: translateY(110%); }
+
+        .hero-title {
+            font-size: clamp(3rem, 10vw, 9rem); font-weight: 800; line-height: 0.95;
+            letter-spacing: -0.02em; text-transform: uppercase; color: #ffffff;
+            margin-bottom: 0.5rem; text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* --- ANIMATED HERO STATS --- */
+        .hero-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+        }
+        .hero-stat {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .hero-stat h3 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--brand-blue);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: baseline;
+        }
+        .hero-stat p {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #d4d4d4;
+            letter-spacing: 1px;
+        }
+
+        .hero-bottom {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            width: 100%; overflow: hidden; flex-wrap: wrap; gap: 2rem;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 1.2vw, 1.3rem); font-weight: 500; max-width: 500px; line-height: 1.5;
+            color: #f0f0f0; border-left: 3px solid var(--brand-blue); padding-left: 1rem;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        .scroll-indicator { font-size: 0.85rem; text-transform: uppercase; font-weight: 700; color: #fff; }
+
+        /* --- MARQUEE --- */
+        .marquee-container {
+            padding: 4rem 0; background: var(--card-bg); overflow: hidden; display: flex; flex-direction: column; gap: 2rem;
+        }
+        .marquee-label { text-align: center; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--brand-blue); letter-spacing: 0.1em; }
+        .marquee { display: flex; width: max-content; }
+        .marquee-track { display: flex; align-items: center; gap: 5rem; padding-right: 5rem; animation: scroll 30s linear infinite; }
+
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+
+        .client-logo { height: 45px; display: flex; align-items: center; justify-content: center; filter: grayscale(100%) opacity(0.6); transition: filter 0.3s ease, transform 0.3s ease; }
+        .client-logo:hover { filter: grayscale(0%) opacity(1); transform: scale(1.05); }
+        .client-logo svg { height: 100%; max-width: 150px; }
+
+        .brand-iron { font-family: serif; color: #2B5A82; font-weight: 700; letter-spacing: 1px; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;}
+        .brand-iron::before { content: '▲'; font-size: 1.5rem; }
+        .brand-ador { background: #D32027; color: #fff; padding: 4px 10px; font-weight: 900; line-height: 1; text-align: center; border-radius: 2px; font-family: sans-serif; font-size: 1.2rem; }
+        .brand-ador small { display: block; font-size: 0.55rem; font-weight: 500; letter-spacing: 1px; margin-top: 2px;}
+
+        /* --- ABOUT SECTION --- */
+        .about { padding: 8vw 4vw; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .about-content h2 { font-size: clamp(2rem, 5vw, 4rem); line-height: 1.1; font-weight: 800; text-transform: uppercase; margin-bottom: 2rem;}
+        .about-content h2 span { color: var(--brand-blue); }
+        .about-text { font-size: 1.15rem; line-height: 1.7; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+        .about-image-wrapper { position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); height: 500px; }
+        .about-image-wrapper img { width: 100%; height: 130%; object-fit: cover; display: block; transform: translateY(-15%); }
+
+        /* --- SERVICES SECTION --- */
+        .services { padding: 8vw 4vw; background: #fff; }
+        .section-header { margin-bottom: 4rem; text-align: center; }
+        .section-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; }
+
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+
+        .service-card {
+            background: var(--bg-color); border-radius: 6px; padding: 3rem 2rem;
+            display: flex; flex-direction: column; height: 100%;
+            transition: transform 0.4s ease, background 0.4s ease;
+            position: relative; overflow: hidden; border-top: 4px solid transparent;
+        }
+        .service-card:hover { transform: translateY(-10px); background: #f8f9fa; border-top-color: var(--brand-blue); }
+        .service-num { font-size: 2.5rem; font-weight: 800; color: rgba(10, 75, 143, 0.08); position: absolute; top: 1rem; right: 1.5rem; transition: color 0.4s ease;}
+        .service-card:hover .service-num { color: rgba(10, 75, 143, 0.2); }
+        .service-card h3 { font-size: 1.4rem; font-weight: 800; text-transform: uppercase; margin-bottom: 1rem; color: #111; z-index: 2; }
+        .service-card p { font-size: 1rem; color: var(--text-muted); line-height: 1.6; z-index: 2; }
+
+        /* --- VISUAL PROJECT SHOWCASE --- */
+        .projects { padding: 8vw 4vw; background: #050505; color: #fff; }
+        .projects .section-header h2 { color: #fff; text-align: left; margin-bottom: 1rem; }
+
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+
+        .project-card {
+            background: #111; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease, border-color 0.3s ease; cursor: pointer;
+        }
+        .project-card:hover { transform: translateY(-10px); border-color: var(--brand-blue); }
+
+        .project-img-wrapper { height: 250px; overflow: hidden; position: relative; }
+        .project-img-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .project-card:hover .project-img-wrapper img { transform: scale(1.1); }
+
+        .project-content { padding: 2rem; }
+        .project-client { font-size: 1.2rem; font-weight: 800; color: var(--brand-blue); margin-bottom: 0.5rem; text-transform: uppercase;}
+        .project-desc { font-size: 0.95rem; color: #aaa; line-height: 1.5; margin-bottom: 1.5rem; }
+        .project-year { font-size: 0.85rem; font-weight: 800; color: #666; }
+
+        /* --- TIMELINE (JOURNEY) SECTION --- */
+        .journey { padding: 8vw 4vw; background: #fff; position: relative; }
+        .journey-header { text-align: center; margin-bottom: 6rem; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .journey-header h2 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; line-height: 1.1; margin-bottom: 1rem; }
+        .journey-header p { font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; }
+
+        .timeline-container { position: relative; max-width: 1000px; margin: 0 auto; padding: 2rem 0; }
+        /* The structural line */
+        .timeline-line-bg { position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: rgba(0,0,0,0.1); transform: translateX(-50%); }
+        /* The animated progress line */
+        .timeline-progress { position: absolute; left: 50%; top: 0; width: 2px; background: var(--brand-blue); transform: translateX(-50%); height: 0%; z-index: 1; }
+
+        .timeline-item { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 4rem; z-index: 2;}
+        .timeline-item:nth-child(even) { flex-direction: row-reverse; }
+
+        .timeline-content { width: 45%; background: var(--bg-color); padding: 2rem; border-radius: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); opacity: 0; transform: translateY(30px); border-left: 4px solid var(--brand-blue);}
+        .timeline-item:nth-child(even) .timeline-content { border-left: none; border-right: 4px solid var(--brand-blue); text-align: right; }
+
+        .timeline-year { font-size: 1.8rem; font-weight: 800; color: var(--brand-blue); margin-bottom: 0.5rem; }
+        .timeline-content h4 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; text-transform: uppercase; }
+        .timeline-content p { color: var(--text-muted); line-height: 1.5; font-size: 0.95rem; }
+
+        /* The center dot */
+        .timeline-dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 16px; height: 16px; background: #fff; border: 3px solid var(--brand-blue); border-radius: 50%; z-index: 3; transition: background 0.3s ease; }
+        .timeline-item.active .timeline-dot { background: var(--brand-blue); box-shadow: 0 0 15px rgba(10, 75, 143, 0.4); }
+
+        /* --- FOOTER --- */
+        footer { background: #0a0a0a; color: #fff; padding: 8vw 4vw 2vw; display: flex; flex-direction: column; gap: 4rem; border-top: 1px solid #222; }
+        .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem; }
+        .footer-cta { font-size: clamp(2rem, 5vw, 4rem); font-weight: 800; text-transform: uppercase; line-height: 1; }
+        .footer-cta span { color: var(--brand-blue); }
+
+        .footer-contact h4 { margin-bottom: 1rem; color: var(--brand-blue); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .footer-contact p { margin-bottom: 0.5rem; font-size: 1rem; color: #aaa; line-height: 1.5; }
+        .footer-contact a { color: #fff; text-decoration: none; font-weight: 700; font-size: 1.2rem; transition: color 0.3s; display: inline-block; margin-top: 0.5rem; }
+        .footer-contact a:hover { color: var(--brand-blue); }
+
+        .footer-bottom { display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 2rem; font-size: 0.85rem; color: #666; flex-wrap: wrap; gap: 1rem;}
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 1024px) {
+            .about { grid-template-columns: 1fr; }
+            .about-image-wrapper { height: 400px; }
+            .footer-top { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hamburger { display: block; }
+            .hero-title { font-size: 3.5rem; }
+            .hero-stats { gap: 1.5rem; }
+            .hero-stat h3 { font-size: 2rem; }
+            .marquee-track { gap: 3rem; padding-right: 3rem; }
+            .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+
+            /* Mobile Timeline Layout */
+            .timeline-line-bg, .timeline-progress { left: 20px; transform: none; }
+            .timeline-item { justify-content: flex-end; }
+            .timeline-item:nth-child(even) { flex-direction: row; justify-content: flex-end; }
+            .timeline-content { width: calc(100% - 60px); }
+            .timeline-item:nth-child(even) .timeline-content { border-right: none; border-left: 4px solid var(--brand-blue); text-align: left; }
+            .timeline-dot { left: 20px; transform: translate(-50%, -50%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader">
+        <div class="loader-logo-wrapper">
+            <img src="logo.webp" alt="Metal Barns Logo" class="loader-logo">
+        </div>
+        <div class="loader-bar-wrapper">
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+
+    <nav id="navbar">
+        <div class="nav-logo" id="nav-logo" style="cursor:pointer;">
+            <img src="logo.webp" alt="Metal Barns">
+        </div>
+        <div class="nav-links">
+            <a href="#about" class="nav-link">About MBI</a>
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#projects" class="nav-link">Showcase</a>
+            <a href="#journey" class="nav-link">Journey</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="hamburger" id="hamburger">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#about" class="mobile-link">About MBI</a>
+        <a href="#services" class="mobile-link">Services</a>
+        <a href="#projects" class="mobile-link">Showcase</a>
+        <a href="#journey" class="mobile-link">Journey</a>
+        <a href="#contact" class="mobile-link">Contact</a>
+    </div>
+
+    <header class="hero">
+        <div class="hero-slideshow">
+            <img class="hero-slide active" src="hero-slide-1.webp" alt="Steel Delivery Truck">
+            <img class="hero-slide" src="hero-slide-2.webp" alt="Industrial Facility">
+            <img class="hero-slide" src="hero-slide-3.webp" alt="Massive Factory Exterior">
+        </div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content-wrapper">
+            <div class="hero-line"><h1 class="hero-title text-mask"><span>STRUCTURAL</span></h1></div>
+            <div class="hero-line"><h1 class="hero-title text-mask"><span>EXCELLENCE</span></h1></div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3><span class="counter" data-target="10">0</span>+</h3>
+                    <p>Years Experience</p>
+                </div>
+                <div class="hero-stat">
+                    <h3><span class="counter" data-target="25">0</span>+</h3>
+                    <p>Corporate Clients</p>
+                </div>
+                <div class="hero-stat">
+                    <h3><span class="counter" data-target="280">0</span>+</h3>
+                    <p>Team Members</p>
+                </div>
+                <div class="hero-stat">
+                    <h3><span class="counter" data-target="15">0</span>L+</h3>
+                    <p>Sq. Ft. Area Built</p>
+                </div>
+                <div class="hero-stat">
+                    <h3><span class="counter" data-target="104">0</span></h3>
+                    <p>Acres PEB</p>
+                </div>
+            </div>
+
+            <div class="hero-bottom">
+                <div class="text-mask"><span class="hero-subtitle">Delivering project-managed, cost-effective, and ROI-capable steel buildings to our customers. ISO 9001: 2015 Certified.</span></div>
+                <div class="text-mask"><span class="scroll-indicator">[ Scroll to Explore ]</span></div>
+            </div>
+        </div>
+    </header>
+
+    <section class="marquee-container" id="brands">
+        <div class="marquee-label">Brands We Use & Trust</div>
+        <div class="marquee">
+            <div class="marquee-track">
+                <div class="client-logo"><svg viewBox="0 0 100 100" fill="currentColor"><path d="M50 0A50 50 0 10100 50 50 50 0 0050 0zm0 4L56 46l40-10-33 24 18 36-31-23-31 23 18-36-33-24 40 10z"/></svg><span style="margin-left:8px; font-weight:800; font-size:1.5rem; letter-spacing:-1px; font-family: serif;">Mercedes-Benz</span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:2rem; font-family: serif; letter-spacing:-2px; border: 3px solid currentColor; border-radius:50%; width: 55px; height:55px; display:flex; align-items:center; justify-content:center;">L&T</span></div>
+                <div class="client-logo"><span style="font-weight:700; font-size:1.8rem; letter-spacing: 2px; font-family:serif; color:#E31837;">Raymond</span></div>
+                <div class="client-logo"><span class="brand-iron">IRON MOUNTAIN</span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:1.8rem; letter-spacing: 2px; color: #009999;">SIEMENS</span></div>
+                <div class="client-logo"><span style="font-weight:900; font-size:2.2rem; font-style: italic; letter-spacing:-1px; color:#123282;">JSW<span style="font-size:1.2rem; font-weight:500; margin-left:5px; font-style:normal;">Steel</span></span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:1.8rem; color:#005BBB;">TATA STEEL</span></div>
+                <div class="client-logo"><span class="brand-ador">ador<small>WELDING</small></span></div>
+                <div class="client-logo"><svg viewBox="0 0 100 100" fill="none" stroke="#D32027" stroke-width="8"><circle cx="50" cy="50" r="40"/><path d="M50 20v60M20 50h60M30 30l40 40M70 30L30 70"/></svg><span style="margin-left:12px; font-weight:800; font-size:2rem; color:#D32027;">BOSCH</span></div>
+            </div>
+            <div class="marquee-track">
+                <div class="client-logo"><svg viewBox="0 0 100 100" fill="currentColor"><path d="M50 0A50 50 0 10100 50 50 50 0 0050 0zm0 4L56 46l40-10-33 24 18 36-31-23-31 23 18-36-33-24 40 10z"/></svg><span style="margin-left:8px; font-weight:800; font-size:1.5rem; letter-spacing:-1px; font-family: serif;">Mercedes-Benz</span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:2rem; font-family: serif; letter-spacing:-2px; border: 3px solid currentColor; border-radius:50%; width: 55px; height:55px; display:flex; align-items:center; justify-content:center;">L&T</span></div>
+                <div class="client-logo"><span style="font-weight:700; font-size:1.8rem; letter-spacing: 2px; font-family:serif; color:#E31837;">Raymond</span></div>
+                <div class="client-logo"><span class="brand-iron">IRON MOUNTAIN</span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:1.8rem; letter-spacing: 2px; color: #009999;">SIEMENS</span></div>
+                <div class="client-logo"><span style="font-weight:900; font-size:2.2rem; font-style: italic; letter-spacing:-1px; color:#123282;">JSW<span style="font-size:1.2rem; font-weight:500; margin-left:5px; font-style:normal;">Steel</span></span></div>
+                <div class="client-logo"><span style="font-weight:800; font-size:1.8rem; color:#005BBB;">TATA STEEL</span></div>
+                <div class="client-logo"><span class="brand-ador">ador<small>WELDING</small></span></div>
+                <div class="client-logo"><svg viewBox="0 0 100 100" fill="none" stroke="#D32027" stroke-width="8"><circle cx="50" cy="50" r="40"/><path d="M50 20v60M20 50h60M30 30l40 40M70 30L30 70"/></svg><span style="margin-left:12px; font-weight:800; font-size:2rem; color:#D32027;">BOSCH</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <h2 class="text-mask"><span>Leading the</span> <br><span>Future of</span> <br><span style="color: var(--brand-blue);">Steel Solutions.</span></h2>
+            <div class="gsap-fade-up" style="margin-top: 2rem;">
+                <p class="about-text">Metal Barns India (MBI) is a leading provider of innovative structural and services solutions, established in October 2014. Our team comprises professionals with over 42 years of experience in manufacturing, engineering, operations, and sales from large corporate firms.</p>
+                <p class="about-text">Our Vision: To be the number one provider of innovative structural and services solutions for SMEs in India. We believe in producing time-managed, well-engineered, and honest steel structures.</p>
+            </div>
+        </div>
+        <div class="about-image-wrapper">
+            <img src="hero-slide-1.webp" alt="Steel delivery truck with structural beams" class="parallax-img">
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2 class="text-mask"><span>Core</span> <span>Capabilities</span></h2>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card gsap-card">
+                <span class="service-num">01</span>
+                <h3>EPC for Steel Structures</h3>
+                <p>Precision, performance and perfection define our EPC services. Our manufacturing process integrates innovative techniques with stringent quality standards to deliver outstanding steel structures.</p>
+            </div>
+            <div class="service-card gsap-card">
+                <span class="service-num">02</span>
+                <h3>360-Degree Compliance</h3>
+                <p>We ensure full compliance with safety and quality standards, providing peace of mind through every stage of your project.</p>
+            </div>
+            <div class="service-card gsap-card">
+                <span class="service-num">03</span>
+                <h3>Layout Design</h3>
+                <p>Our design team creates optimized layouts for industrial and logistics facilities, ensuring efficient use of space and resources.</p>
+            </div>
+            <div class="service-card gsap-card">
+                <span class="service-num">04</span>
+                <h3>Innovative Engineering</h3>
+                <p>Our engineers bring cutting-edge designs and engineering solutions, addressing the most challenging structural requirements with innovation and expertise.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects" id="projects">
+        <div class="section-header">
+            <h2 class="text-mask"><span>Project Showcase</span></h2>
+            <div class="gsap-fade-up">
+                <p style="color: #aaa; margin-top: 1rem;">A selection of our turnkey engineering and construction achievements across India.</p>
+            </div>
+        </div>
+
+        <div class="project-grid">
+            <div class="project-card gsap-card">
+                <div class="project-img-wrapper">
+                    <img src="project-showroom.webp" alt="Automobile Showroom MBI Project">
+                </div>
+                <div class="project-content">
+                    <div class="project-client">Automobile Showroom</div>
+                    <div class="project-desc">Completed a 10,000 sqft high-end showroom with complex RCC to steel connections, demonstrating capability in intricate designs.</div>
+                    <div class="project-year">Delivered: 2015</div>
+                </div>
+            </div>
+
+            <div class="project-card gsap-card">
+                <div class="project-img-wrapper">
+                    <img src="project-warehousing.webp" alt="Structural Steel Frame Building">
+                </div>
+                <div class="project-content">
+                    <div class="project-client">Minimalistic Foundations</div>
+                    <div class="project-desc">Designed and delivered extensive warehousing featuring minimalistic civil foundations and advanced PCC techniques.</div>
+                    <div class="project-year">Industrial Warehousing</div>
+                </div>
+            </div>
+
+            <div class="project-card gsap-card">
+                <div class="project-img-wrapper">
+                    <img src="project-manufacturing.webp" alt="Manufacturing Plant Metal Barns">
+                </div>
+                <div class="project-content">
+                    <div class="project-client">Manufacturing Plant</div>
+                    <div class="project-desc">Turnkey design, engineering and construction for large-scale manufacturing units, ensuring optimal floor layouts.</div>
+                    <div class="project-year">Complete EPC Solution</div>
+                </div>
+            </div>
+
+            <div class="project-card gsap-card">
+                <div class="project-img-wrapper">
+                    <img src="project-logistics.webp" alt="Large Logistics Center">
+                </div>
+                <div class="project-content">
+                    <div class="project-client">Logistics & Storage</div>
+                    <div class="project-desc">Delivered multi-level storage buildings achieving record tonnage and time efficiency, complete with stringent safety compliance.</div>
+                    <div class="project-year">Large Scale Storage</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="journey" id="journey">
+        <div class="journey-header">
+            <h2 class="gsap-fade-up">Over 10 Years Journey of Excellence Since 2014</h2>
+            <p class="gsap-fade-up">Discover the remarkable journey of Metal Barns India over the past decade. Our commitment to innovation, quality, and customer satisfaction has driven our growth from a small fabricator to a leading provider of turnkey solutions in the steel building industry.</p>
+        </div>
+
+        <div class="timeline-container">
+            <div class="timeline-line-bg"></div>
+            <div class="timeline-progress" id="timeline-progress"></div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2014</div>
+                    <h4>Inception</h4>
+                    <p>Started as a Fabricator of PEB Structures with a dedicated core team.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 19</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2015</div>
+                    <h4>Capacity Upgrade</h4>
+                    <p>Successfully expanded fabrication capabilities to handle larger scale projects.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 25</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2016</div>
+                    <h4>In-House Erection</h4>
+                    <p>Transitioned into a complete Steel Building provider with our own dedicated erection team.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 30</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2017</div>
+                    <h4>Service Expansion</h4>
+                    <p>Officially established as a comprehensive Steel Building & Services Provider.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 59</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2018</div>
+                    <h4>Solutions Provider</h4>
+                    <p>Became an integrated Solutions Provider for advanced Steel Buildings.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 70</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2020</div>
+                    <h4>Advanced Optimization</h4>
+                    <p>Focused on Critical Building Design & Optimization for highly complex structural engineering.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 83</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2021</div>
+                    <h4>Scaling Operations</h4>
+                    <p>Experienced continued aggressive growth in both project volume and workforce capacity.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 100+</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2022</div>
+                    <h4>Comprehensive Turnkey</h4>
+                    <p>Began offering fully integrated turnkey solutions with comprehensive end-to-end services.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 100+</p>
+                </div>
+            </div>
+
+            <div class="timeline-item timeline-element">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-year">Oct 2023</div>
+                    <h4>Mastery of Civil & Steel</h4>
+                    <p>Delivering the ultimate Turnkey Solution — seamlessly managing both Steel and Civil structural requirements.</p>
+                    <p style="margin-top:0.5rem; font-weight:700; color:var(--brand-blue);">Team Size: 276+</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-top">
+            <div>
+                <h2 class="footer-cta text-mask"><span>Build</span> <span>With</span><br><span style="color: var(--brand-blue);">MBI.</span></h2>
+            </div>
+            <div class="footer-contact gsap-fade-up">
+                <h4>Registered Office</h4>
+                <p>W 12/12 MIDC, Hingna Road Area,<br>Nagpur - 440016, Maharashtra</p>
+                <a href="tel:+917620044077">+91 76200 44077</a>
+                <a href="mailto:info@metalbarns.in" style="font-size: 1rem;">info@metalbarns.in</a>
+            </div>
+            <div class="footer-contact gsap-fade-up">
+                <h4>Unit II</h4>
+                <p>Plot No 613-616, Near Mohpa ST Bus Stand,<br>Kalmeshwar Saoner Road,<br>District - Nagpur</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Metal Barns India. ISO 9001:2015 Certified.</p>
+            <p>Designed & Developed by <strong>Zyflux</strong></p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                // Close mobile menu if open
+                if(mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    hamburger.classList.remove('active');
+                }
+                lenis.scrollTo(this.getAttribute('href'), { offset: -80 });
+            });
+        });
+
+        // Logo click → scroll to top
+        document.getElementById('nav-logo').addEventListener('click', () => {
+            lenis.scrollTo(0);
+        });
+
+        // Mobile Menu Logic
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when tapping the overlay background
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                mobileMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // 2. Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 3. Loader & Initial Reveal Sequence
+        const loaderTl = gsap.timeline({
+            onComplete: () => {
+                document.body.classList.add('loaded'); // Allows scrolling
+            }
+        });
+
+        loaderTl.to(".loader-logo", {
+            y: 0, opacity: 1, duration: 1, ease: "power4.out", delay: 0.2
+        })
+        .to(".loader-bar", {
+            width: "100%", duration: 1.5, ease: "power3.inOut"
+        }, "-=0.2")
+        .to([".loader-logo", ".loader-bar-wrapper"], {
+            y: "-100%", opacity: 0, duration: 0.6, ease: "power3.in"
+        })
+        .to(".loader", {
+            yPercent: -100, duration: 1.2, ease: "power4.inOut"
+        }, "-=0.2")
+
+        // Hero Text Mask Reveal (Staggered)
+        .to(".hero-title span", {
+            y: 0, duration: 1.2, stagger: 0.1, ease: "power4.out"
+        }, "-=0.8")
+        .to(".hero-bottom span", {
+            y: 0, duration: 1, stagger: 0.2, ease: "power3.out"
+        }, "-=0.8")
+        // Animate the stats block up
+        .to(".hero-stat", {
+            y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out"
+        }, "-=0.6")
+        // GSAP Counter Animation
+        .add(() => {
+            document.querySelectorAll('.counter').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                let zero = { val: 0 };
+                gsap.to(zero, {
+                    val: target,
+                    duration: 2,
+                    ease: "power3.out",
+                    onUpdate: function() {
+                        counter.innerText = Math.floor(zero.val);
+                    }
+                });
+            });
+        }, "-=0.4");
+
+        // 4. Hero Slideshow Logic (Ken Burns effect)
+        const slides = document.querySelectorAll('.hero-slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 6000);
+
+        // 5. Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                document.getElementById('navbar').classList.add('nav-scrolled');
+            } else {
+                document.getElementById('navbar').classList.remove('nav-scrolled');
+            }
+        });
+
+        // 6. Scroll Animations
+
+        // General Fade Up for text blocks
+        gsap.utils.toArray('.gsap-fade-up').forEach(el => {
+            gsap.fromTo(el,
+                { y: 40, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } }
+            );
+        });
+
+        // Masked Text Reveals on Scroll
+        gsap.utils.toArray('section .text-mask span, footer .text-mask span').forEach(el => {
+            gsap.fromTo(el,
+                { y: "110%" },
+                { y: "0%", duration: 1, ease: "power4.out", scrollTrigger: { trigger: el.closest('.text-mask'), start: "top 90%" } }
+            );
+        });
+
+        // Staggered Cards (Services & Projects)
+        const cardGrids = document.querySelectorAll('.services-grid, .project-grid');
+        cardGrids.forEach(grid => {
+            const cards = grid.querySelectorAll('.gsap-card');
+            gsap.fromTo(cards,
+                { y: 60, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: "power3.out", scrollTrigger: { trigger: grid, start: "top 85%" } }
+            );
+        });
+
+        // About Image Parallax
+        gsap.to('.parallax-img', {
+            yPercent: 30, // Moves the image down slightly as you scroll down
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".about-image-wrapper",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // TIMELINE ANIMATION (The Journey)
+        // 1. Draw the vertical line down
+        gsap.to("#timeline-progress", {
+            height: "100%", ease: "none",
+            scrollTrigger: { trigger: ".timeline-container", start: "top 50%", end: "bottom 50%", scrub: true }
+        });
+
+        // 2. Reveal each timeline item as you scroll past it
+        const timelineItems = document.querySelectorAll('.timeline-element');
+        timelineItems.forEach(item => {
+            const content = item.querySelector('.timeline-content');
+
+            // Fade in content box
+            gsap.to(content, {
+                y: 0, opacity: 1, duration: 0.8, ease: "power3.out",
+                scrollTrigger: { trigger: item, start: "top 75%" }
+            });
+
+            // Activate the dot color when the line reaches it
+            ScrollTrigger.create({
+                trigger: item, start: "top 50%",
+                onEnter: () => item.classList.add('active'),
+                onLeaveBack: () => item.classList.remove('active')
+            });
+        });
+
+    </script>
+</body>
+</html>
