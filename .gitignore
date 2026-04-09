@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Build artifacts
+tsconfig.tsbuildinfo
+
+# Large media files (host separately / use CDN)
+public/mbi-promo.mp4
+public/mbi-unit2.mp4
+
+# Raw source content (not needed in repo)
+Metal Barns Content/
+
+# Editor & tool config
+.claude/
+.code-review-graph/
+.cursor/
+.opencode.json
+
+# Environment
+.env
+.env.local
+.env.production
+
+# OS
+.DS_Store
+Thumbs.db
