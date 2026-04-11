@@ -1,13 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-
-const slides = [
-  { src: '/hero-construction-sunset.jpg', alt: 'Steel structure erection at sunset' },
-  { src: '/factory-interior.jpg', alt: 'MBI factory floor with overhead crane' },
-  { src: '/hero-slide-2.webp', alt: 'Industrial Facility' },
-  { src: '/hero-slide-3.webp', alt: 'Massive Factory Exterior' },
-];
+import { useEffect, useRef } from 'react';
+import { Component as EtherealShadow } from '@/components/ui/etheral-shadow';
 
 const stats = [
   { target: 10, suffix: '+', label: 'Years Experience' },
@@ -18,80 +12,83 @@ const stats = [
 ];
 
 export default function HeroSection() {
-  const [currentSlide, setCurrentSlide] = useState(0);
   const statRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // Slideshow
+  // GSAP animations — triggered by mbi:loaded event from Loader
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // GSAP animations
-  useEffect(() => {
-    let cleanup: (() => void) | undefined;
+    let outerCleanup: (() => void) | undefined;
 
     const run = async () => {
       const { gsap } = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      const tl = gsap.timeline({ delay: 3.2 });
+      const handler = () => {
+        const tl = gsap.timeline();
 
-      tl.to('.hero-title span', {
-        y: 0,
-        duration: 1.2,
-        stagger: 0.1,
-        ease: 'power4.out',
-      })
-        .to(
-          '.hero-bottom span',
-          { y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
-          '-=0.8'
-        )
-        .to(
-          '.hero-stat',
-          { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
-          '-=0.6'
-        )
-        .add(() => {
-          stats.forEach((s, i) => {
-            const el = statRefs.current[i];
-            if (!el) return;
-            const obj = { val: 0 };
-            gsap.to(obj, {
-              val: s.target,
-              duration: 2,
-              ease: 'power3.out',
-              onUpdate() {
-                el.textContent = Math.floor(obj.val).toString();
-              },
+        tl.to('.hero-title span', {
+          y: 0,
+          duration: 1.2,
+          stagger: 0.1,
+          ease: 'power4.out',
+        })
+          .to(
+            '.hero-bottom span',
+            { y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
+            '-=0.8'
+          )
+          .to(
+            '.hero-stat',
+            { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
+            '-=0.6'
+          )
+          .add(() => {
+            stats.forEach((s, i) => {
+              const el = statRefs.current[i];
+              if (!el) return;
+              const obj = { val: 0 };
+              gsap.to(obj, {
+                val: s.target,
+                duration: 2,
+                ease: 'power3.out',
+                onUpdate() {
+                  el.textContent = Math.floor(obj.val).toString();
+                },
+              });
             });
-          });
-        }, '-=0.4');
+          }, '-=0.4');
 
-      cleanup = () => tl.kill();
+        outerCleanup = () => tl.kill();
+      };
+
+      window.addEventListener('mbi:loaded', handler);
+
+      return () => {
+        window.removeEventListener('mbi:loaded', handler);
+        outerCleanup?.();
+      };
     };
 
-    run();
+    let cleanup: (() => void) | undefined;
+    run().then((fn) => { cleanup = fn; });
+
     return () => cleanup?.();
   }, []);
 
+  // Both modes: rgba(128,128,128,1) is the component default and what the reference uses.
+  // The background (white or black) handles the contrast — we don't need a different color.
+  const shadowColor = 'rgba(128, 128, 128, 1)';
+
   return (
     <header className="hero">
-      {/* Slideshow */}
-      <div className="hero-slideshow">
-        {slides.map((slide, i) => (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            key={slide.src}
-            src={slide.src}
-            alt={slide.alt}
-            className={`hero-slide${i === currentSlide ? ' active' : ''}`}
-          />
-        ))}
+      {/* Ethereal Shadow Background */}
+      <div className="hero-shadow-bg">
+        <EtherealShadow
+          color={shadowColor}
+          animation={{ scale: 100, speed: 90 }}
+          noise={{ opacity: 1, scale: 1.2 }}
+          sizing="fill"
+        />
       </div>
 
       <div className="hero-overlay" />
