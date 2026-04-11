@@ -1,4 +1,47 @@
+'use client';
+
+import { useEffect } from 'react';
+
 export default function Footer() {
+  useEffect(() => {
+    const run = async () => {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Footer CTA text mask reveal
+      gsap.utils.toArray<HTMLElement>('.footer-cta span').forEach((el) => {
+        gsap.fromTo(
+          el,
+          { y: '110%' },
+          {
+            y: '0%',
+            duration: 1,
+            ease: 'power4.out',
+            scrollTrigger: { trigger: el.closest('.footer-cta'), start: 'top 90%' },
+          }
+        );
+      });
+
+      // Footer contact blocks staggered fade-up
+      const blocks = gsap.utils.toArray<HTMLElement>('.footer-contact.gsap-fade-up');
+      gsap.fromTo(
+        blocks,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.footer-top', start: 'top 85%' },
+        }
+      );
+    };
+
+    run();
+  }, []);
+
   return (
     <footer id="contact">
       <div className="footer-top">
@@ -37,9 +80,6 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <p>&copy; 2026 Metal Barns India. ISO 9001:2015 Certified.</p>
-        <p>
-          Designed &amp; Developed by <strong>Zyflux</strong>
-        </p>
       </div>
     </footer>
   );
