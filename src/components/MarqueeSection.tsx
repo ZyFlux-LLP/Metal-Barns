@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect } from 'react';
+
 const clients = [
   { src: '/clients/mercedes.webp', alt: 'Mercedes-Benz' },
   { src: '/clients/lt.png', alt: 'L&T' },
@@ -28,6 +32,28 @@ const ClientLogos = () => (
 );
 
 export default function MarqueeSection() {
+  useEffect(() => {
+    const run = async () => {
+      const { gsap } = await import('gsap');
+      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.fromTo(
+        '.marquee-label',
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: { trigger: '.marquee-container', start: 'top 90%' },
+        }
+      );
+    };
+
+    run();
+  }, []);
+
   return (
     <section className="marquee-container" id="brands">
       <div className="marquee-label">Our Clients</div>
