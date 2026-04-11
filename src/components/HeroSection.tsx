@@ -96,18 +96,18 @@ export default function HeroSection() {
       <div className="hero-content-wrapper">
         <div className="hero-line">
           <h1 className="hero-title text-mask">
-            <span>STRUCTURAL</span>
+            <span style={{ display: 'inline-block', transform: 'translateY(110%)' }}>STRUCTURAL</span>
           </h1>
         </div>
         <div className="hero-line">
           <h1 className="hero-title text-mask">
-            <span>EXCELLENCE</span>
+            <span style={{ display: 'inline-block', transform: 'translateY(110%)' }}>EXCELLENCE</span>
           </h1>
         </div>
 
         <div className="hero-stats">
           {stats.map((s, i) => (
-            <div className="hero-stat" key={s.label}>
+            <div className="hero-stat" key={s.label} style={{ opacity: 0, transform: 'translateY(20px)' }}>
               <h3>
                 <span
                   className="counter"
@@ -126,13 +126,13 @@ export default function HeroSection() {
 
         <div className="hero-bottom">
           <div className="text-mask">
-            <span className="hero-subtitle">
+            <span className="hero-subtitle" style={{ display: 'inline-block', transform: 'translateY(110%)' }}>
               Delivering project-managed, cost-effective, and ROI-capable steel buildings to our
               customers. ISO 9001: 2015 Certified.
             </span>
           </div>
           <div className="text-mask">
-            <span className="scroll-indicator">[ Scroll to Explore ]</span>
+            <span className="scroll-indicator" style={{ display: 'inline-block', transform: 'translateY(110%)' }}>[ Scroll to Explore ]</span>
           </div>
         </div>
       </div>

@@ -65,14 +65,14 @@ export default function Navbar() {
     const run = async () => {
       const { gsap } = await import('gsap');
 
-      gsap.set(navRef.current, { y: -60, opacity: 0 });
-
+      // inline style already hides nav from first paint — just wire the reveal
       const handler = () => {
         gsap.to(navRef.current, {
           y: 0,
           opacity: 1,
           duration: 0.8,
           ease: 'power3.out',
+          clearProps: 'transform',
         });
       };
 
@@ -102,7 +102,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav ref={navRef} className={[scrolled ? 'nav-scrolled' : '', pathname === '/' ? 'nav-home' : ''].filter(Boolean).join(' ')}>
+      <nav
+        ref={navRef}
+        style={{ opacity: 0, transform: 'translateY(-60px)' }}
+        className={[scrolled ? 'nav-scrolled' : '', pathname === '/' ? 'nav-home' : ''].filter(Boolean).join(' ')}
+      >
         <Link href="/" className="nav-logo" aria-label="Metal Barns India Home">
           <Image src="/logo.webp" alt="Metal Barns India" width={160} height={40} priority />
         </Link>
