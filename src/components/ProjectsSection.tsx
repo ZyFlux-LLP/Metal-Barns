@@ -109,7 +109,7 @@ export default function ProjectsSection() {
           <span>Project Showcase</span>
         </h2>
         <div className="gsap-fade-up">
-          <p style={{ color: '#aaa', marginTop: '1rem' }}>
+          <p style={{ color: 'var(--projects-desc)', marginTop: '1rem' }}>
             A selection of our turnkey engineering and construction achievements across India.
           </p>
         </div>
