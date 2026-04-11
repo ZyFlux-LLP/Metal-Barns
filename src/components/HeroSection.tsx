@@ -26,15 +26,16 @@ export default function HeroSection() {
       const handler = () => {
         const tl = gsap.timeline();
 
-        tl.fromTo(
-            '.hero-title span',
-            { y: '110%' },
-            { y: '0%', duration: 1.2, stagger: 0.15, ease: 'power4.out' }
-          )
-          .fromTo(
+        tl.to('.hero-title span', {
+            y: 0,
+            opacity: 1,
+            duration: 1.2,
+            stagger: 0.15,
+            ease: 'power4.out',
+          })
+          .to(
             '.hero-bottom span',
-            { y: '110%' },
-            { y: '0%', duration: 1, stagger: 0.2, ease: 'power3.out' },
+            { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out' },
             '-=0.8'
           )
           .to(
@@ -95,13 +96,13 @@ export default function HeroSection() {
 
       <div className="hero-content-wrapper">
         <div className="hero-line">
-          <h1 className="hero-title text-mask">
-            <span style={{ display: 'inline-block', transform: 'translateY(110%)' }}>STRUCTURAL</span>
+          <h1 className="hero-title">
+            <span style={{ display: 'inline-block', opacity: 0, transform: 'translateY(30px)' }}>STRUCTURAL</span>
           </h1>
         </div>
         <div className="hero-line">
-          <h1 className="hero-title text-mask">
-            <span style={{ display: 'inline-block', transform: 'translateY(110%)' }}>EXCELLENCE</span>
+          <h1 className="hero-title">
+            <span style={{ display: 'inline-block', opacity: 0, transform: 'translateY(30px)' }}>EXCELLENCE</span>
           </h1>
         </div>
 
@@ -125,14 +126,14 @@ export default function HeroSection() {
         </div>
 
         <div className="hero-bottom">
-          <div className="text-mask">
-            <span className="hero-subtitle" style={{ display: 'inline-block', transform: 'translateY(110%)' }}>
+          <div>
+            <span className="hero-subtitle" style={{ display: 'inline-block', opacity: 0, transform: 'translateY(20px)' }}>
               Delivering project-managed, cost-effective, and ROI-capable steel buildings to our
               customers. ISO 9001: 2015 Certified.
             </span>
           </div>
-          <div className="text-mask">
-            <span className="scroll-indicator" style={{ display: 'inline-block', transform: 'translateY(110%)' }}>[ Scroll to Explore ]</span>
+          <div>
+            <span className="scroll-indicator" style={{ display: 'inline-block', opacity: 0, transform: 'translateY(20px)' }}>[ Scroll to Explore ]</span>
           </div>
         </div>
       </div>
