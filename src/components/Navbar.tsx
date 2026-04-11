@@ -71,7 +71,6 @@ export default function Navbar() {
           opacity: 1,
           duration: 0.8,
           ease: 'power3.out',
-          clearProps: 'transform',
         });
       };
 
