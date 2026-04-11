@@ -14,32 +14,28 @@ const stats = [
 export default function HeroSection() {
   const statRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
-  // GSAP animations — triggered by mbi:loaded event from Loader
   useEffect(() => {
-    let outerCleanup: (() => void) | undefined;
+    let cancelled = false;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let tl: any = null;
+    let removeListener: (() => void) | null = null;
 
-    const run = async () => {
+    const start = async () => {
       const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
+      if (cancelled) return;
 
-      const playIntro = () => {
-        const tl = gsap.timeline();
+      const play = () => {
+        if (cancelled) return;
 
+        tl = gsap.timeline();
         tl.to('.hero-title span', {
-            y: 0,
-            opacity: 1,
-            duration: 1.2,
-            stagger: 0.15,
-            ease: 'power4.out',
+            y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: 'power4.out',
           })
-          .to(
-            '.hero-bottom span',
+          .to('.hero-bottom span',
             { y: 0, opacity: 1, duration: 1, stagger: 0.2, ease: 'power3.out' },
             '-=0.8'
           )
-          .to(
-            '.hero-stat',
+          .to('.hero-stat',
             { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out' },
             '-=0.6'
           )
@@ -52,35 +48,27 @@ export default function HeroSection() {
                 val: s.target,
                 duration: 2,
                 ease: 'power3.out',
-                onUpdate() {
-                  el.textContent = Math.floor(obj.val).toString();
-                },
+                onUpdate() { el.textContent = Math.floor(obj.val).toString(); },
               });
             });
           }, '-=0.4');
-
-        outerCleanup = () => tl.kill();
       };
 
-      // Client-side navigation: intro already played, animate immediately
       if (sessionStorage.getItem('mbi:loaded') === 'true') {
-        playIntro();
-        return () => { outerCleanup?.(); };
+        play();
+      } else {
+        window.addEventListener('mbi:loaded', play, { once: true });
+        removeListener = () => window.removeEventListener('mbi:loaded', play);
       }
-
-      // Initial load: wait for the loader to fire the event
-      window.addEventListener('mbi:loaded', playIntro, { once: true });
-
-      return () => {
-        window.removeEventListener('mbi:loaded', playIntro);
-        outerCleanup?.();
-      };
     };
 
-    let cleanup: (() => void) | undefined;
-    run().then((fn) => { cleanup = fn; });
+    start();
 
-    return () => cleanup?.();
+    return () => {
+      cancelled = true;
+      tl?.kill();
+      removeListener?.();
+    };
   }, []);
 
   // Both modes: rgba(128,128,128,1) is the component default and what the reference uses.

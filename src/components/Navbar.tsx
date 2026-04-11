@@ -60,36 +60,32 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    let cleanup: (() => void) | undefined;
+    let cancelled = false;
+    let removeListener: (() => void) | null = null;
 
-    const run = async () => {
+    const start = async () => {
       const { gsap } = await import('gsap');
+      if (cancelled) return;
 
-      const revealNav = () => {
-        gsap.to(navRef.current, {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power3.out',
-        });
+      const reveal = () => {
+        if (cancelled) return;
+        gsap.to(navRef.current, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' });
       };
 
-      // Already revealed in this session — animate in immediately
       if (sessionStorage.getItem('mbi:loaded') === 'true') {
-        revealNav();
-        return;
+        reveal();
+      } else {
+        window.addEventListener('mbi:loaded', reveal, { once: true });
+        removeListener = () => window.removeEventListener('mbi:loaded', reveal);
       }
-
-      window.addEventListener('mbi:loaded', revealNav, { once: true });
-
-      return () => {
-        window.removeEventListener('mbi:loaded', revealNav);
-      };
     };
 
-    run().then((fn) => { cleanup = fn; });
+    start();
 
-    return () => cleanup?.();
+    return () => {
+      cancelled = true;
+      removeListener?.();
+    };
   }, []);
 
   // Close menu on route change
