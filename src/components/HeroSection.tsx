@@ -23,7 +23,7 @@ export default function HeroSection() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
 
-      const handler = () => {
+      const playIntro = () => {
         const tl = gsap.timeline();
 
         tl.to('.hero-title span', {
@@ -62,10 +62,17 @@ export default function HeroSection() {
         outerCleanup = () => tl.kill();
       };
 
-      window.addEventListener('mbi:loaded', handler);
+      // Client-side navigation: intro already played, animate immediately
+      if (sessionStorage.getItem('mbi:loaded') === 'true') {
+        playIntro();
+        return () => { outerCleanup?.(); };
+      }
+
+      // Initial load: wait for the loader to fire the event
+      window.addEventListener('mbi:loaded', playIntro, { once: true });
 
       return () => {
-        window.removeEventListener('mbi:loaded', handler);
+        window.removeEventListener('mbi:loaded', playIntro);
         outerCleanup?.();
       };
     };

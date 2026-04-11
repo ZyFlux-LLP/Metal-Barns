@@ -24,6 +24,7 @@ export default function Loader() {
           if (loaderRef.current) {
             loaderRef.current.style.display = 'none';
           }
+          sessionStorage.setItem('mbi:loaded', 'true');
           window.dispatchEvent(new CustomEvent('mbi:loaded'));
         },
       });

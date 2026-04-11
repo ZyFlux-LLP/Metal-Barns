@@ -65,8 +65,7 @@ export default function Navbar() {
     const run = async () => {
       const { gsap } = await import('gsap');
 
-      // inline style already hides nav from first paint — just wire the reveal
-      const handler = () => {
+      const revealNav = () => {
         gsap.to(navRef.current, {
           y: 0,
           opacity: 1,
@@ -76,10 +75,16 @@ export default function Navbar() {
         });
       };
 
-      window.addEventListener('mbi:loaded', handler);
+      // Already revealed in this session — animate in immediately
+      if (sessionStorage.getItem('mbi:loaded') === 'true') {
+        revealNav();
+        return;
+      }
+
+      window.addEventListener('mbi:loaded', revealNav, { once: true });
 
       return () => {
-        window.removeEventListener('mbi:loaded', handler);
+        window.removeEventListener('mbi:loaded', revealNav);
       };
     };
 
@@ -104,7 +109,6 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        style={{ opacity: 0, transform: 'translateY(-60px)' }}
         className={[scrolled ? 'nav-scrolled' : '', pathname === '/' ? 'nav-home' : ''].filter(Boolean).join(' ')}
       >
         <Link href="/" className="nav-logo" aria-label="Metal Barns India Home">
