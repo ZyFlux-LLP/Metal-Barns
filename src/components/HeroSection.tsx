@@ -26,15 +26,15 @@ export default function HeroSection() {
       const handler = () => {
         const tl = gsap.timeline();
 
-        tl.to('.hero-title span', {
-          y: 0,
-          duration: 1.2,
-          stagger: 0.1,
-          ease: 'power4.out',
-        })
-          .to(
+        tl.fromTo(
+            '.hero-title span',
+            { y: '110%' },
+            { y: '0%', duration: 1.2, stagger: 0.15, ease: 'power4.out' }
+          )
+          .fromTo(
             '.hero-bottom span',
-            { y: 0, duration: 1, stagger: 0.2, ease: 'power3.out' },
+            { y: '110%' },
+            { y: '0%', duration: 1, stagger: 0.2, ease: 'power3.out' },
             '-=0.8'
           )
           .to(
