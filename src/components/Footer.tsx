@@ -60,8 +60,8 @@ export default function Footer() {
             <br />
             Nagpur - 440016, Maharashtra
           </p>
-          <a href="tel:+917620044077">+91 76200 44077</a>
-          <a href="mailto:info@metalbarns.in" style={{ fontSize: '1rem' }}>
+          <a href="tel:+917620044077" style={{ display: 'block' }}>+91 76200 44077</a>
+          <a href="mailto:info@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
             info@metalbarns.in
           </a>
         </div>

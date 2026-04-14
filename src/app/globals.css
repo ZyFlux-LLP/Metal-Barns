@@ -29,6 +29,8 @@
   --projects-card-border: rgba(0, 0, 0, 0.08);
   --projects-desc: #555555;
   --projects-year: #888888;
+  /* ── Marquee / Clients ── */
+  --marquee-bg: #ffffff;
 }
 
 html.dark {
@@ -53,6 +55,8 @@ html.dark {
   --hero-scroll: #ffffff;
   /* ── Projects ── */
   --projects-bg: #050505;
+  /* ── Marquee / Clients ── */
+  --marquee-bg: #111115;
   --projects-text: #ffffff;
   --projects-card-bg: #111111;
   --projects-card-border: rgba(255, 255, 255, 0.05);
@@ -393,7 +397,7 @@ html.dark .hero-overlay {
 .hero-stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 3rem;
+  gap: 2rem;
   margin-top: 2rem;
   margin-bottom: 3rem;
 }
@@ -404,7 +408,7 @@ html.dark .hero-overlay {
 }
 
 .hero-stat h3 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   font-weight: 800;
   color: var(--brand-blue);
   line-height: 1;
@@ -456,7 +460,7 @@ html.dark .hero-overlay {
 /* ── MARQUEE ── */
 .marquee-container {
   padding: 4rem 0;
-  background: var(--projects-bg);
+  background: var(--marquee-bg);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -492,12 +496,15 @@ html.dark .hero-overlay {
 }
 
 .client-logo {
-  height: 45px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: transparent;
   filter: opacity(0.8);
-  transition: filter 0.3s ease, transform 0.3s ease;
+  transition: filter 0.3s ease, transform 0.3s ease, background 0.3s ease;
 }
 
 .client-logo:hover {
@@ -715,7 +722,7 @@ html.dark .hero-overlay {
 .service-num {
   font-size: 2.5rem;
   font-weight: 800;
-  color: rgba(10, 75, 143, 0.08);
+  color: rgba(10, 75, 143, 0.25);
   position: absolute;
   top: 1rem;
   right: 1.5rem;
@@ -723,7 +730,15 @@ html.dark .hero-overlay {
 }
 
 .service-card:hover .service-num {
-  color: rgba(10, 75, 143, 0.2);
+  color: rgba(10, 75, 143, 0.5);
+}
+
+html.dark .service-num {
+  color: rgba(30, 130, 230, 0.35);
+}
+
+html.dark .service-card:hover .service-num {
+  color: rgba(30, 130, 230, 0.6);
 }
 
 .service-card h3 {
@@ -1390,6 +1405,17 @@ html.dark .nav-scrolled .theme-toggle {
   gap: 1rem;
 }
 
+
+/* client logos: white card per logo so original colors show on dark background */
+html.dark .client-logo {
+  background: rgba(255, 255, 255, 0.9);
+  filter: opacity(0.85);
+}
+
+html.dark .client-logo:hover {
+  background: rgba(255, 255, 255, 1);
+  filter: opacity(1);
+}
 
 /* about section dark border on image */
 html.dark .about-image-wrapper {

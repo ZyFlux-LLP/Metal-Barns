@@ -4,11 +4,11 @@ import { useEffect, useRef } from 'react';
 import { Component as EtherealShadow } from '@/components/ui/etheral-shadow';
 
 const stats = [
-  { target: 10, suffix: '+', label: 'Years Experience' },
-  { target: 25, suffix: '+', label: 'Corporate Clients' },
-  { target: 280, suffix: '+', label: 'Team Members' },
   { target: 15, suffix: 'L+', label: 'Sq. Ft. Area Built' },
-  { target: 104, suffix: '', label: 'Acres PEB' },
+  { target: 280, suffix: '+', label: 'Team Members' },
+  { target: 104, suffix: '', label: 'Acres EPC' },
+  { target: 25, suffix: '+', label: 'Corporate Clients' },
+  { target: 10, suffix: '+', label: 'Years Experience' },
 ];
 
 export default function HeroSection() {

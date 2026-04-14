@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import ContactForm from '@/components/ContactForm';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Metal Barns India',
@@ -24,18 +25,17 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* Contact Details */}
-      <section
-        style={{
-          padding: '8vw 4vw',
-          background: '#fff',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-          gap: '3rem',
-          maxWidth: '1200px',
-          margin: '0 auto',
-        }}
-      >
+      {/* Contact Details + Form */}
+      <section style={{ background: 'var(--bg-secondary)', padding: '8vw 4vw' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '4rem',
+            maxWidth: '1200px',
+            margin: '0 auto',
+          }}
+        >
         {/* CTA */}
         <div>
           <h2
@@ -140,81 +140,27 @@ export default function ContactPage() {
           </div>
         </div>
 
-        {/* Offices */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <div
+        {/* Contact Form */}
+        <div>
+          <h3
             style={{
-              background: 'var(--bg-color)',
-              borderRadius: '8px',
-              padding: '2rem',
-              borderLeft: '4px solid var(--brand-blue)',
+              fontWeight: 800,
+              fontSize: 'clamp(1.4rem, 3vw, 2rem)',
+              textTransform: 'uppercase',
+              lineHeight: 1.1,
+              marginBottom: '0.5rem',
             }}
           >
-            <h4
-              style={{
-                fontWeight: 700,
-                fontSize: '0.8rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                color: 'var(--brand-blue)',
-                marginBottom: '0.75rem',
-              }}
-            >
-              Registered Office
-            </h4>
-            <p style={{ color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '1rem' }}>
-              W 12/12 MIDC, Hingna Road Area,
-              <br />
-              Nagpur - 440016, Maharashtra
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: 'var(--bg-color)',
-              borderRadius: '8px',
-              padding: '2rem',
-              borderLeft: '4px solid var(--brand-blue)',
-            }}
-          >
-            <h4
-              style={{
-                fontWeight: 700,
-                fontSize: '0.8rem',
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                color: 'var(--brand-blue)',
-                marginBottom: '0.75rem',
-              }}
-            >
-              Unit II
-            </h4>
-            <p style={{ color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '1rem' }}>
-              Plot No 613-616, Near Mohpa ST Bus Stand,
-              <br />
-              Kalmeshwar Saoner Road,
-              <br />
-              District - Nagpur
-            </p>
-          </div>
-
-          <div
-            style={{
-              background: 'var(--brand-blue)',
-              borderRadius: '8px',
-              padding: '1.5rem 2rem',
-              color: '#fff',
-            }}
-          >
-            <p
-              style={{ fontSize: '0.75rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem', opacity: 0.8 }}
-            >
-              Certification
-            </p>
-            <p style={{ fontWeight: 800, fontSize: '1.1rem' }}>ISO 9001:2015 Certified</p>
-          </div>
+            Send Us a <span style={{ color: 'var(--brand-blue)' }}>Message</span>
+          </h3>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', lineHeight: 1.6 }}>
+            Fill in your details and we&apos;ll reach out within one business day.
+          </p>
+          <ContactForm />
+        </div>
         </div>
       </section>
+
     </>
   );
 }

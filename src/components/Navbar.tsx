@@ -6,10 +6,9 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
-  { href: '/about', label: 'About MBI' },
+  { href: '/projects', label: 'Projects' },
   { href: '/services', label: 'Services' },
-  { href: '/projects', label: 'Showcase' },
-  { href: '/journey', label: 'Journey' },
+  { href: '/about', label: 'About MBI' },
   { href: '/contact', label: 'Contact' },
 ];
 

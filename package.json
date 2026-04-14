@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@studio-freight/lenis": "^1.0.33",
+    "@types/nodemailer": "^8.0.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.12.5",
     "next": "^15.1.0",
+    "nodemailer": "^8.0.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
