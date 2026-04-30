@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Component as EtherealShadow } from '@/components/ui/etheral-shadow';
 
 const stats = [
   { target: 15, suffix: 'L+', label: 'Sq. Ft. Area Built' },
@@ -71,21 +70,16 @@ export default function HeroSection() {
     };
   }, []);
 
-  // Both modes: rgba(128,128,128,1) is the component default and what the reference uses.
-  // The background (white or black) handles the contrast — we don't need a different color.
-  const shadowColor = 'rgba(128, 128, 128, 1)';
-
   return (
     <header className="hero">
-      {/* Ethereal Shadow Background */}
-      <div className="hero-shadow-bg">
-        <EtherealShadow
-          color={shadowColor}
-          animation={{ scale: 100, speed: 90 }}
-          noise={{ opacity: 1, scale: 1.2 }}
-          sizing="fill"
-        />
-      </div>
+      <video
+        className="hero-video-bg"
+        src="/marathwada.webm"
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
 
       <div className="hero-overlay" />
 
