@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 const stats = [
   { target: 15, suffix: 'L+', label: 'Sq. Ft. Area Built' },
@@ -72,13 +73,13 @@ export default function HeroSection() {
 
   return (
     <header className="hero">
-      <video
+      <Image
         className="hero-video-bg"
-        src="/marathwada.webm"
-        autoPlay
-        loop
-        muted
-        playsInline
+        src="/hero-bg.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
       />
 
       <div className="hero-overlay" />
