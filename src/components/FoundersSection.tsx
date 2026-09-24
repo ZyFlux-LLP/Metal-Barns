@@ -4,27 +4,29 @@ import { useEffect } from 'react';
 
 const founders = [
   {
-    initials: 'RD',
-    name: 'Rajesh Deshmukh',
-    role: 'Co-Founder & Managing Director',
-    badge: 'Visionary',
-    bio: 'With over 22 years in the steel and heavy manufacturing sector, Rajesh spearheaded the vision for Metal Barns India in 2014. His deep expertise in large-scale EPC projects and project management has driven MBI\'s growth from 19 to 276+ team members. Previously held senior roles at JSW Steel and L&T Construction.',
+    photo: '/founders/jaya-guha.jpeg',
+    initials: 'JG',
+    name: 'Jaya Guha',
+    role: 'Co-Founder',
+    badge: 'Finance & Sales',
+    bio: 'A Sales and Finance professional with two decades of experience, Jaya previously served as Deputy Vice President at Bajaj Allianz, India\'s 3rd largest life insurance company, where she was responsible for SBU profitability across Rest of Maharashtra and received multiple performance awards. At Metal Barns, she leads Finance, Accounting, Sales, Statutory Compliances, and Vendor Relationships, driving effective rate and budgetary control that has been instrumental to the organization\'s growth.',
     stats: [
-      { num: '22+', label: 'Yrs Experience' },
-      { num: '₹120Cr+', label: 'Projects Led' },
-      { num: '2014', label: 'Founded MBI' },
+      { num: '20+', label: 'Yrs Experience' },
+      { num: 'DVP', label: 'Ex-Bajaj Allianz' },
+      { num: 'PG', label: 'Finance & Marketing' },
     ],
   },
   {
-    initials: 'AK',
-    name: 'Anil Kulkarni',
-    role: 'Co-Founder & Director – Engineering',
-    badge: 'Engineer',
-    bio: 'Anil brings 20+ years of structural engineering and pre-engineered building design expertise. A graduate of VNIT Nagpur, he has been instrumental in building MBI\'s in-house engineering capabilities and ISO 9001:2015 quality systems. His technical leadership ensures every structure is built to last.',
+    photo: '/founders/avijit-guha.jpeg',
+    initials: 'AG',
+    name: 'Avijit Guha',
+    role: 'Co-Founder',
+    badge: 'Strategy & Business Development',
+    bio: 'A Business Development and Systems professional with 13 years of experience, Avijit previously served as Assistant Vice President (IR & PR) for a large fund manager, leading international business development, systems design, and statutory compliance. At Metal Barns, he drives Strategy, Business Development, Marketing, Production, and Customer Service, championing a Customer First approach across the organization.',
     stats: [
-      { num: '20+', label: 'Yrs Experience' },
-      { num: '104', label: 'Acres PEB Built' },
-      { num: 'ISO', label: '9001:2015 Lead' },
+      { num: '13+', label: 'Yrs Experience' },
+      { num: 'AVP', label: 'Ex-IR & PR' },
+      { num: 'PG', label: 'Business Admin' },
     ],
   },
 ];
@@ -74,8 +76,9 @@ export default function FoundersSection() {
           <span style={{ color: 'var(--brand-blue)' }}>Founders</span>
         </h2>
         <p style={{ marginTop: '1rem' }}>
-          The minds behind Metal Barns India — a combined legacy of 42+ years in steel,
-          engineering, and construction across India&apos;s most demanding projects.
+          The minds behind Metal Barns India — combining two decades of finance and sales
+          leadership with over a decade of business development and systems expertise to
+          drive MBI forward.
         </p>
       </div>
 
@@ -83,7 +86,8 @@ export default function FoundersSection() {
         {founders.map((f) => (
           <div className="founder-card" key={f.name}>
             <div className="founder-avatar">
-              <div className="founder-initials">{f.initials}</div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={f.photo} alt={f.name} className="founder-photo" />
               <div className="founder-badge">{f.badge}</div>
             </div>
             <div className="founder-info">

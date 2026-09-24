@@ -76,6 +76,39 @@ export default function Footer() {
             District - Nagpur
           </p>
         </div>
+
+        <div className="footer-contact gsap-fade-up">
+          <h4>Lucknow Sales Office</h4>
+          <p>
+            4th Floor, C/o Shri Bharat Pandey,
+            <br />
+            710A, Crescent Height, Sushant Golf City,
+            <br />
+            Lucknow - 226030
+          </p>
+        </div>
+
+        <div className="footer-contact gsap-fade-up">
+          <h4>Guwahati Sales Office</h4>
+          <p>
+            01, Jain Complex, 4th Floor,
+            <br />
+            Mahapurush Srimanta Shankardeva Path,
+            <br />
+            Guwahati - 781005
+          </p>
+        </div>
+
+        <div className="footer-contact gsap-fade-up">
+          <h4>Gurgaon Sales Office</h4>
+          <p>
+            80-01, Emaar The Palm Square,
+            <br />
+            Golf Course Extension Road, Sector 66,
+            <br />
+            Gurugram, Haryana - 122102
+          </p>
+        </div>
       </div>
 
       <div className="footer-bottom">

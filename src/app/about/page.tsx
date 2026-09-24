@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import AboutSection from '@/components/AboutSection';
 import JourneySection from '@/components/JourneySection';
 import FoundersSection from '@/components/FoundersSection';
+import OfficesSection from '@/components/OfficesSection';
 
 export const metadata: Metadata = {
   title: 'About MBI | Metal Barns India',
@@ -29,6 +30,7 @@ export default function AboutPage() {
 
       <AboutSection />
       <FoundersSection />
+      <OfficesSection />
       <JourneySection />
     </>
   );

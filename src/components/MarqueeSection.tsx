@@ -15,9 +15,16 @@ const clients = [
   { src: '/clients/simplex.png', alt: 'Simplex Infrastructures' },
   { src: '/clients/drdo.png', alt: 'DRDO' },
   { src: '/clients/act2.png', alt: 'Act II' },
-  { src: '/clients/srd.png', alt: 'SRD' },
+  { src: '/clients/srd-group-logo-retina.png', alt: 'SRD Group' },
   { src: '/clients/hni.png', alt: 'HNI bpergo' },
   { src: '/clients/thermit.png', alt: 'Thermit' },
+  { src: '/clients/snowman-logistics.png', alt: 'Snowman Logistics' },
+  { src: '/clients/kingsway-hospitals.png', alt: 'KIMS-Kingsway Hospitals' },
+  { src: '/clients/repose-bake-house.png', alt: 'Repose Bake House' },
+  { src: '/clients/kirti-oil.png', alt: 'Kirti Gold' },
+  { src: '/clients/arena-maruti.svg', alt: 'Arena – Pandya Automobiles' },
+  { src: '/clients/himalaya.png', alt: 'Himalaya Agro Industries' },
+  { src: '/clients/negc.webp', alt: 'North East Global Company' },
 ];
 
 const ClientLogos = () => (

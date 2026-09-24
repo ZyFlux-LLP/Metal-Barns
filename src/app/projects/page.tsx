@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import ProjectsSection from '@/components/ProjectsSection';
+import ProjectsByCategory from '@/components/ProjectsByCategory';
 
 export const metadata: Metadata = {
   title: 'Project Showcase | Metal Barns India',
@@ -25,7 +25,7 @@ export default function ProjectsPage() {
         </div>
       </div>
 
-      <ProjectsSection />
+      <ProjectsByCategory />
     </>
   );
 }
