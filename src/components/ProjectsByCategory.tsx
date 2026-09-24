@@ -46,19 +46,30 @@ export default function ProjectsByCategory() {
 
   return (
     <section className="projects projects-categories" id="all-projects">
-      {projectClasses.map((cls) => (
-        <div className="project-category" key={cls.key}>
-          <div className="section-header project-category-header">
-            <h2 className="text-mask">
-              <span>{cls.label}</span>
-            </h2>
-            <p style={{ color: 'var(--projects-desc)' }}>
-              {cls.projects.length} project{cls.projects.length > 1 ? 's' : ''}
-            </p>
+      <div className="projects-category-nav" role="navigation" aria-label="Jump to project category">
+        {projectClasses.map((cls) => (
+          <a key={cls.key} href={`#${cls.key}`} className="projects-category-nav-link">
+            {cls.label}
+          </a>
+        ))}
+      </div>
+
+      {projectClasses.map((cls, idx) => (
+        <div className="project-category" id={cls.key} key={cls.key}>
+          <div className="project-category-header">
+            <span className="project-category-index">{String(idx + 1).padStart(2, '0')}</span>
+            <div className="project-category-heading">
+              <h2 className="text-mask">
+                <span>{cls.label}</span>
+              </h2>
+              <p style={{ color: 'var(--projects-desc)' }}>
+                {cls.projects.length} project{cls.projects.length > 1 ? 's' : ''}
+              </p>
+            </div>
           </div>
           <div className="project-grid">
             {cls.projects.map((p) => (
-              <ProjectCard project={p} key={`${p.client}-${p.type}`} />
+              <ProjectCard project={p} category={cls.label} key={`${p.client}-${p.type}`} />
             ))}
           </div>
         </div>

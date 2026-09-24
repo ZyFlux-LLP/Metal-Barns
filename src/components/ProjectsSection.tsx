@@ -65,20 +65,28 @@ export default function ProjectsSection() {
   return (
     <section className="projects" id="projects">
       <div className="section-header">
-        <h2 className="text-mask">
-          <span>Project Showcase</span>
-        </h2>
-        <div className="gsap-fade-up">
-          <p style={{ color: 'var(--projects-desc)', marginTop: '1rem' }}>
-            A selection of our turnkey engineering and construction achievements across India —
-            cold storage, data centres, industrial, medical, commercial, and residential.
-          </p>
+        <div className="section-header-text">
+          <span className="section-eyebrow gsap-fade-up">Our Work</span>
+          <h2 className="text-mask">
+            <span>Project Showcase</span>
+          </h2>
+          <div className="gsap-fade-up">
+            <p>
+              A selection of our turnkey engineering and construction achievements across India —
+              cold storage, data centres, industrial, medical, commercial, and residential.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="project-grid">
-        {featured.map((p) => (
-          <ProjectCard project={p} key={p.client} />
+      <div className="project-grid project-grid--featured">
+        {featured.map((p, i) => (
+          <ProjectCard
+            project={p}
+            category={projectClasses[i].label}
+            featured={i === 0}
+            key={p.client}
+          />
         ))}
       </div>
 
