@@ -79,14 +79,9 @@ export default function ProjectsSection() {
         </div>
       </div>
 
-      <div className="project-grid project-grid--featured">
+      <div className="project-grid">
         {featured.map((p, i) => (
-          <ProjectCard
-            project={p}
-            category={projectClasses[i].label}
-            featured={i === 0}
-            key={p.client}
-          />
+          <ProjectCard project={p} category={projectClasses[i].label} key={p.client} />
         ))}
       </div>
 

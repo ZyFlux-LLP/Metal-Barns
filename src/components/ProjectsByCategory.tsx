@@ -1,8 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, type MouseEvent } from 'react';
 import { projectClasses } from '@/data/projects';
 import ProjectCard from './ProjectCard';
+
+function scrollToCategory(e: MouseEvent<HTMLAnchorElement>, key: string) {
+  const target = document.getElementById(key);
+  if (!target) return;
+  e.preventDefault();
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  history.replaceState(null, '', `#${key}`);
+}
 
 export default function ProjectsByCategory() {
   useEffect(() => {
@@ -48,7 +57,12 @@ export default function ProjectsByCategory() {
     <section className="projects projects-categories" id="all-projects">
       <div className="projects-category-nav" role="navigation" aria-label="Jump to project category">
         {projectClasses.map((cls) => (
-          <a key={cls.key} href={`#${cls.key}`} className="projects-category-nav-link">
+          <a
+            key={cls.key}
+            href={`#${cls.key}`}
+            className="projects-category-nav-link"
+            onClick={(e) => scrollToCategory(e, cls.key)}
+          >
             {cls.label}
           </a>
         ))}

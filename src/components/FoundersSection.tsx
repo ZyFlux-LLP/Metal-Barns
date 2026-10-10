@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 
 const founders = [
   {
-    photo: '/founders/jaya-guha.jpeg',
+    photo: '/founders/jaya-guha.webp',
     initials: 'JG',
     name: 'Jaya Guha',
     role: 'Co-Founder',
@@ -17,7 +17,7 @@ const founders = [
     ],
   },
   {
-    photo: '/founders/avijit-guha.jpeg',
+    photo: '/founders/avijit-guha.webp',
     initials: 'AG',
     name: 'Avijit Guha',
     role: 'Co-Founder',

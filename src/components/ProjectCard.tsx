@@ -30,16 +30,14 @@ function TonnageIcon() {
 export default function ProjectCard({
   project,
   category,
-  featured,
 }: {
   project: Project;
   category?: string;
-  featured?: boolean;
 }) {
   const hasPhoto = Boolean(project.img);
 
   return (
-    <div className={`project-card gsap-card${featured ? ' project-card--featured' : ''}`}>
+    <div className="project-card gsap-card">
       <div className={`project-media${hasPhoto ? '' : ' project-media--logo'}`}>
         {category && <span className="project-chip">{category}</span>}
         {hasPhoto ? (
