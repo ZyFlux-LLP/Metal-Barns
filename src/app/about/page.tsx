@@ -28,10 +28,10 @@ export default function AboutPage() {
         </div>
       </div>
 
-      <AboutSection />
       <FoundersSection />
       <OfficesSection />
       <JourneySection />
+      <AboutSection />
     </>
   );
 }
