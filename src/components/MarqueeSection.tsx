@@ -25,6 +25,7 @@ const clients = [
   { src: '/clients/arena-maruti.svg', alt: 'Arena – Pandya Automobiles' },
   { src: '/clients/himalaya.png', alt: 'Himalaya Agro Industries' },
   { src: '/clients/negc.webp', alt: 'North East Global Company' },
+  { src: '/clients/jw-marriott.png', alt: 'JW Marriott' },
 ];
 
 const ClientLogos = () => (
