@@ -17,42 +17,6 @@ export type ProjectClass = {
 
 export const projectClasses: ProjectClass[] = [
   {
-    key: 'cold-storage',
-    label: 'Cold Storage',
-    projects: [
-      {
-        client: 'Gateway Distriparks Ltd',
-        type: 'Multilevel Cold Storage',
-        location: 'Coimbatore, Tamil Nadu',
-        area: '50,000 sq ft',
-        tonnage: '150 MT',
-        img: '/projects/gateway-distriparks.webp',
-      },
-      {
-        client: 'Sumitra Agrotech Foodpark',
-        type: 'Cold Storage',
-        location: 'Mangaldoi, Assam',
-        area: '16,500 sq ft',
-        tonnage: '53 MT',
-        logo: '/clients/srd-group-logo-retina.png',
-      },
-    ],
-  },
-  {
-    key: 'data-centre',
-    label: 'Data Centre',
-    projects: [
-      {
-        client: 'Iron Mountain',
-        type: 'Data Centre',
-        location: 'Jaipur, Rajasthan',
-        area: '50,000 sq ft',
-        tonnage: '111 MT',
-        img: '/projects/iron-mountain.webp',
-      },
-    ],
-  },
-  {
     key: 'industrial',
     label: 'Industrial',
     projects: [
@@ -111,7 +75,7 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '25,000 sq ft',
         tonnage: '75 MT',
-        logo: '/clients/srd-group-logo-retina.png',
+        img: '/projects/sumitra-warehouse.webp',
       },
       {
         client: 'Repose Bake House',
@@ -119,7 +83,7 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '27,705 sq ft',
         tonnage: '85.8 MT',
-        logo: '/clients/repose-bake-house.png',
+        img: '/projects/repose-bake-house.webp',
       },
       {
         client: 'SRD Bakers, Unit 2',
@@ -127,7 +91,7 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '9,308 sq ft',
         tonnage: '38.35 MT',
-        logo: '/clients/srd-group-logo-retina.png',
+        img: '/projects/srd-bakers-unit-2.webp',
       },
       {
         client: 'North East Global Company',
@@ -161,6 +125,42 @@ export const projectClasses: ProjectClass[] = [
         tonnage: '2,260 MT',
         logo: '/clients/kirti-oil.png',
         note: 'Still from the video — one of MBI\'s largest single-client rollouts across 6 locations.',
+      },
+    ],
+  },
+  {
+    key: 'cold-storage',
+    label: 'Cold Storage',
+    projects: [
+      {
+        client: 'Gateway Distriparks Ltd',
+        type: 'Multilevel Cold Storage',
+        location: 'Coimbatore, Tamil Nadu',
+        area: '50,000 sq ft',
+        tonnage: '150 MT',
+        img: '/projects/gateway-distriparks.webp',
+      },
+      {
+        client: 'Sumitra Agrotech Foodpark',
+        type: 'Cold Storage',
+        location: 'Mangaldoi, Assam',
+        area: '16,500 sq ft',
+        tonnage: '53 MT',
+        img: '/projects/sumitra-cold-storage.webp',
+      },
+    ],
+  },
+  {
+    key: 'data-centre',
+    label: 'Data Centre',
+    projects: [
+      {
+        client: 'Iron Mountain',
+        type: 'Data Centre',
+        location: 'Jaipur, Rajasthan',
+        area: '50,000 sq ft',
+        tonnage: '111 MT',
+        img: '/projects/iron-mountain.webp',
       },
     ],
   },

@@ -1,124 +1,96 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useState } from 'react';
 
-const machines = [
-  {
-    img: '/machinery/spiro-tornado.webp',
-    name: 'Spiro-Tornado CNC Welder',
-    desc: 'Automated submerged arc welding system for precision beam fabrication at scale.',
-  },
-  {
-    img: '/machinery/laser-cutter.webp',
-    name: 'WinArc Laser Cutting System',
-    desc: 'High-speed fiber laser cutting for precise steel plate and section profiling.',
-  },
-  {
-    img: '/machinery/shearing-machine.webp',
-    name: 'EnergyMission Hydraulic Shear',
-    desc: 'Heavy-duty hydraulic plate shearing for high-volume steel sheet processing.',
-  },
-  {
-    img: '/machinery/bolt-lathe.webp',
-    name: 'Bolt Threading Lathe',
-    desc: 'Precision bolt and rod threading for structural connection hardware.',
-  },
-  {
-    img: '/machinery/punch-machine.jpg',
-    name: 'BMI Multi Steelworker',
-    desc: 'Combined punch, shear, and notch machine for structural steel processing.',
-  },
-  {
-    img: '/machinery/robot-welding.webp',
-    name: 'Robotic Welding Arm',
-    desc: 'Yaskawa robotic welder delivering consistent, high-quality weld seams at speed.',
-  },
-  {
-    img: '/machinery/purlin-forming.jpg',
-    name: 'C-Purlin Roll Former',
-    desc: 'Roll forming machine producing precision C & Z purlins for roofing and cladding systems.',
-  },
+type Category = 'fab' | 'site';
+type Machine = { img: string; name: string; desc: string; cat: Category };
+
+const machines: Machine[] = [
+  { img: '/machinery/spiro-tornado.webp', name: 'Spiro-Tornado CNC Welder', desc: 'Automated submerged arc welding system for precision beam fabrication at scale.', cat: 'fab' },
+  { img: '/machinery/laser-cutter.webp', name: 'WinArc Laser Cutting System', desc: 'High-speed fiber laser cutting for precise steel plate and section profiling.', cat: 'fab' },
+  { img: '/machinery/shearing-machine.webp', name: 'EnergyMission Hydraulic Shear', desc: 'Heavy-duty hydraulic plate shearing for high-volume steel sheet processing.', cat: 'fab' },
+  { img: '/machinery/bolt-lathe.webp', name: 'Bolt Threading Lathe', desc: 'Precision bolt and rod threading for structural connection hardware.', cat: 'fab' },
+  { img: '/machinery/punch-machine.jpg', name: 'BMI Multi Steelworker', desc: 'Combined punch, shear, and notch machine for structural steel processing.', cat: 'fab' },
+  { img: '/machinery/robot-welding.webp', name: 'Robotic Welding Arm', desc: 'Yaskawa robotic welder delivering consistent, high-quality weld seams at speed.', cat: 'fab' },
+  { img: '/machinery/purlin-forming.jpg', name: 'C-Purlin Roll Former', desc: 'Roll forming machine producing precision C & Z purlins for roofing and cladding systems.', cat: 'fab' },
+  { img: '/machinery/field-truck-crane.webp', name: 'Telescopic Truck Crane', desc: 'Mobile hydraulic crane for lifting and placing columns, rafters and heavy sections on site.', cat: 'site' },
+  { img: '/machinery/field-boom-lift.webp', name: 'Articulating Boom Lift', desc: 'Aerial work platform for reaching eaves, ridge and cladding at height during erection.', cat: 'site' },
+  { img: '/machinery/field-scissor-lift.webp', name: 'Scissor Lift', desc: 'Stable vertical platform for purlin fixing, sheeting and overhead work inside the shed.', cat: 'site' },
+  { img: '/machinery/field-telehandler.webp', name: 'Telescopic Handler', desc: 'Rough-terrain telehandler for moving and positioning sheets, purlins and materials on site.', cat: 'site' },
+  { img: '/machinery/field-forklift.webp', name: 'Heavy-Duty Forklift', desc: 'High-capacity forklift for loading, unloading and yard handling of fabricated steel.', cat: 'site' },
 ];
 
+const tabs: { id: 'all' | Category; label: string }[] = [
+  { id: 'all', label: 'All Equipment' },
+  { id: 'fab', label: 'In-House Fabrication' },
+  { id: 'site', label: 'Site & Erection' },
+];
+
+const catLabel: Record<Category, string> = { fab: 'Fabrication', site: 'Site & Erection' };
+
 export default function MachinerySection() {
-  useEffect(() => {
-    const run = async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      gsap.registerPlugin(ScrollTrigger);
-
-      gsap.utils.toArray<HTMLElement>('.machinery .text-mask span').forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: '110%' },
-          {
-            y: '0%',
-            duration: 1,
-            ease: 'power4.out',
-            scrollTrigger: { trigger: el.closest('.text-mask'), start: 'top 90%' },
-          }
-        );
-      });
-
-      gsap.utils.toArray<HTMLElement>('.machinery .gsap-fade-up').forEach((el) => {
-        gsap.fromTo(
-          el,
-          { y: 40, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: el, start: 'top 85%' },
-          }
-        );
-      });
-
-      const cards = document.querySelectorAll('.machinery-grid .gsap-card');
-      gsap.fromTo(
-        cards,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: 'power3.out',
-          scrollTrigger: { trigger: '.machinery-grid', start: 'top 85%' },
-        }
-      );
-    };
-
-    run();
-  }, []);
+  const [tab, setTab] = useState<'all' | Category>('all');
+  const visible = machines.filter((m) => tab === 'all' || m.cat === tab);
+  const count = (c: Category) => machines.filter((m) => m.cat === c).length;
 
   return (
-    <section className="machinery" id="machinery">
-      <div className="section-header">
-        <h2 className="text-mask">
-          <span>Our</span> <span>Machinery</span>
-        </h2>
-        <div className="gsap-fade-up">
-          <p style={{ color: '#aaa', marginTop: '1rem' }}>
-            In-house fabrication equipment ensuring precision, quality, and delivery at scale.
+    <section className="mach" id="machinery">
+      <div className="mach-head">
+        <div>
+          <p className="section-eyebrow">Equipment</p>
+          <h2>Our Machinery</h2>
+          <p className="mach-lead">
+            In-house fabrication equipment and site erection fleet, built for precision, quality
+            and delivery at scale.
           </p>
         </div>
+        <dl className="mach-stats">
+          <div>
+            <dt>{count('fab')}</dt>
+            <dd>Fabrication machines</dd>
+          </div>
+          <div>
+            <dt>{count('site')}</dt>
+            <dd>Site & erection equipment</dd>
+          </div>
+        </dl>
       </div>
 
-      <div className="machinery-grid">
-        {machines.map((m) => (
-          <div className="machinery-card gsap-card" key={m.name}>
-            <div className="machinery-img-wrapper">
+      <div className="mach-tabs" role="tablist">
+        {tabs.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={tab === t.id}
+            className={`mach-tab${tab === t.id ? ' active' : ''}`}
+            onClick={() => setTab(t.id)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mach-grid" key={tab}>
+        {visible.map((m, i) => (
+          <article className={`mach-card ${m.cat}`} key={m.name} style={{ animationDelay: `${i * 60}ms` }}>
+            <div className="mach-media">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={m.img} alt={m.name} />
+              <img src={m.img} alt={m.name} loading="lazy" />
+              <span className="mach-badge">{catLabel[m.cat]}</span>
             </div>
-            <div className="machinery-content">
+            <div className="mach-info">
               <h4>{m.name}</h4>
               <p>{m.desc}</p>
             </div>
-          </div>
+          </article>
         ))}
       </div>
+
+      <p className="machinery-credit">
+        Site equipment photos via Wikimedia Commons (CC0, CC BY-SA, public domain): Genie S-65 boom lift, JCB S1930E
+        scissor lift, JCB telehandler, Komatsu forklift and telescopic truck crane.
+        Images are illustrative of equipment types used in the field.
+      </p>
     </section>
   );
 }

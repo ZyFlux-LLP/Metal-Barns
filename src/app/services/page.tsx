@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import ServicesSection from '@/components/ServicesSection';
+import FactoryFloorSection from '@/components/FactoryFloorSection';
 import MachinerySection from '@/components/MachinerySection';
 
 export const metadata: Metadata = {
@@ -27,6 +28,7 @@ export default function ServicesPage() {
       </div>
 
       <ServicesSection />
+      <FactoryFloorSection />
       <MachinerySection />
     </>
   );
