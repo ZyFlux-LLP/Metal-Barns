@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import type { Project } from '@/data/projects';
 
 function LocationIcon() {
@@ -27,6 +30,54 @@ function TonnageIcon() {
   );
 }
 
+function ClockIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </svg>
+  );
+}
+
+function Slideshow({ images, alt }: { images: string[]; alt: string }) {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (images.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = setInterval(() => setActive((i) => (i + 1) % images.length), 3500);
+    return () => clearInterval(id);
+  }, [images.length]);
+
+  return (
+    <>
+      {images.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={src}
+          src={src}
+          alt={alt}
+          className={`project-slide${i === active ? ' is-active' : ''}`}
+          loading={i === 0 ? undefined : 'lazy'}
+        />
+      ))}
+      {images.length > 1 && (
+        <div className="project-dots">
+          {images.map((src, i) => (
+            <button
+              key={src}
+              type="button"
+              aria-label={`Show photo ${i + 1}`}
+              className={i === active ? 'is-active' : ''}
+              onClick={() => setActive(i)}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function ProjectCard({
   project,
   category,
@@ -34,15 +85,15 @@ export default function ProjectCard({
   project: Project;
   category?: string;
 }) {
-  const hasPhoto = Boolean(project.img);
+  const images = project.imgs ?? (project.img ? [project.img] : []);
+  const hasPhoto = images.length > 0;
 
   return (
     <div className="project-card gsap-card">
       <div className={`project-media${hasPhoto ? '' : ' project-media--logo'}`}>
         {category && <span className="project-chip">{category}</span>}
         {hasPhoto ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={project.img} alt={project.client} />
+          <Slideshow images={images} alt={project.client} />
         ) : (
           <div className="project-logo-badge">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -57,7 +108,15 @@ export default function ProjectCard({
           <span><LocationIcon />{project.location}</span>
           <span><AreaIcon />{project.area}</span>
           <span><TonnageIcon />{project.tonnage}</span>
+          {project.duration && <span><ClockIcon />{project.duration}</span>}
         </div>
+        {project.details && (
+          <ul className="project-details">
+            {project.details.map((d) => (
+              <li key={d}>{d}</li>
+            ))}
+          </ul>
+        )}
         {project.note && (
           <div className="project-note">
             <span className="project-note-mark">&ldquo;</span>

@@ -5,7 +5,10 @@ export type Project = {
   area: string;
   tonnage: string;
   img?: string;
+  imgs?: string[];
   logo?: string;
+  duration?: string;
+  details?: string[];
   note?: string;
 };
 
@@ -27,6 +30,8 @@ export const projectClasses: ProjectClass[] = [
         area: '10,000 sq ft',
         tonnage: '20 MT',
         img: '/projects/calderys.webp',
+        duration: '70 days',
+        details: ['Warehouse without column foundations: minimal civil foundations using advanced PCC techniques.'],
       },
       {
         client: 'Himalaya Agro Industries',
@@ -35,6 +40,7 @@ export const projectClasses: ProjectClass[] = [
         area: '25,000 sq ft',
         tonnage: '75 MT',
         img: '/projects/himalaya-agro.webp',
+        duration: '90 days',
       },
       {
         client: 'DRDO-HAL Campus',
@@ -43,6 +49,8 @@ export const projectClasses: ProjectClass[] = [
         area: '13,000 sq ft',
         tonnage: '99 MT',
         img: '/projects/drdo-hal-campus.webp',
+        duration: '68 days',
+        details: ['Aircraft hangar doors, 15 m x 80 m.'],
       },
       {
         client: 'Snowman Logistics Ltd',
@@ -51,6 +59,8 @@ export const projectClasses: ProjectClass[] = [
         area: '30,000 sq ft',
         tonnage: '60 MT',
         img: '/projects/snowman.webp',
+        duration: '123 days',
+        details: ['Valley gutter of 80 m, single slope.', 'Built over the roofs of existing buildings.'],
       },
       {
         client: 'Siemens Ltd',
@@ -75,7 +85,12 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '25,000 sq ft',
         tonnage: '75 MT',
-        img: '/projects/sumitra-warehouse.webp',
+        imgs: [
+          '/projects/sumitra-foodpark-1.webp',
+          '/projects/sumitra-foodpark-2.webp',
+          '/projects/sumitra-warehouse.webp',
+        ],
+        details: ['Part of the 20-acre food park: steel and civil design, steel supply and commissioning of 2,500+ tons, delivered in 2.5 years.'],
       },
       {
         client: 'Repose Bake House',
@@ -99,7 +114,7 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '11,818 sq ft',
         tonnage: '118.6 MT',
-        logo: '/clients/negc.webp',
+        img: '/projects/negc.webp',
       },
       {
         client: 'SRD Food & Beverages Pvt Ltd',
@@ -115,16 +130,27 @@ export const projectClasses: ProjectClass[] = [
         location: 'Mangaldoi, Assam',
         area: '7,020 sq ft',
         tonnage: '30.13 MT',
-        logo: '/clients/srd-group-logo-retina.png',
+        img: '/projects/rolling-spin.webp',
       },
       {
         client: 'Kirti Oil Industries Pvt Ltd',
         type: 'Warehouse, Dry & Cleaning and Machine Platforms',
         location: 'Ambajogai, Barshi, Udgir, Parbhani, Hinganghat & Karanja, Maharashtra',
         area: '6,98,000 sq ft',
-        tonnage: '2,260 MT',
-        logo: '/clients/kirti-oil.png',
-        note: 'Still from the video — one of MBI\'s largest single-client rollouts across 6 locations.',
+        tonnage: '2,718+ MT',
+        imgs: [
+          '/projects/kirti-oil-1.webp',
+          '/projects/kirti-oil-2.webp',
+          '/projects/kirti-oil-3.webp',
+        ],
+        note: 'One of MBI\'s largest single-client rollouts, spread across 6 locations.',
+        duration: '11 months',
+        details: [
+          'Turnkey PEB solution across 6 locations on 15 acres.',
+          'Solvent plants: 40,000 sq ft x 6 nos, 672 tons.',
+          'Machine platforms: 12 m x 6 nos, 726 tons.',
+          'Agri commodity warehouses: 93,000 sq ft x 6 nos, 1,320 tons.',
+        ],
       },
     ],
   },
@@ -139,6 +165,7 @@ export const projectClasses: ProjectClass[] = [
         area: '50,000 sq ft',
         tonnage: '150 MT',
         img: '/projects/gateway-distriparks.webp',
+        details: ['Multilevel cold storage built in a windmill zone.'],
       },
       {
         client: 'Sumitra Agrotech Foodpark',
@@ -147,6 +174,7 @@ export const projectClasses: ProjectClass[] = [
         area: '16,500 sq ft',
         tonnage: '53 MT',
         img: '/projects/sumitra-cold-storage.webp',
+        details: ['Part of the 20-acre food park: steel and civil design, steel supply and commissioning of 2,500+ tons, delivered in 2.5 years.'],
       },
     ],
   },
@@ -161,6 +189,7 @@ export const projectClasses: ProjectClass[] = [
         area: '50,000 sq ft',
         tonnage: '111 MT',
         img: '/projects/iron-mountain.webp',
+        duration: '105 days',
       },
     ],
   },
@@ -189,6 +218,7 @@ export const projectClasses: ProjectClass[] = [
         area: '9,000 sq ft',
         tonnage: '30 MT',
         img: '/projects/merc-benz.webp',
+        details: ['Complex RCC-to-steel connections in a high-end automobile showroom.'],
       },
       {
         client: 'Arena (Pandya Automobiles)',

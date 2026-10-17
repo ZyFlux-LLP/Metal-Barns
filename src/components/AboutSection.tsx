@@ -87,8 +87,8 @@ export default function AboutSection() {
       <div className="about-image-wrapper">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/factory-interior.jpg"
-          alt="MBI factory floor with overhead crane and steel plates"
+          src="/highlights-food-park.jpg"
+          alt="Aerial view of a 20-acre food park built by MBI"
           className="parallax-img"
         />
       </div>

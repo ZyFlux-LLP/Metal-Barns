@@ -46,7 +46,6 @@ export default function FactoryFloorSection() {
           <figure className="factory-card" key={c.src}>
             <video src={c.src} muted loop playsInline preload="metadata" aria-label={c.title} />
             <figcaption>
-              <h4>{c.title}</h4>
               <p>{c.desc}</p>
             </figcaption>
           </figure>
