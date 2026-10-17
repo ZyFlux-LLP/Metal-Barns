@@ -61,8 +61,11 @@ export default function Footer() {
             Nagpur - 440016, Maharashtra
           </p>
           <a href="tel:+917620044077" style={{ display: 'block' }}>+91 76200 44077</a>
-          <a href="mailto:info@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
-            info@metalbarns.in
+          <a href="mailto:avijit@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
+            avijit@metalbarns.in
+          </a>
+          <a href="mailto:jaya@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
+            jaya@metalbarns.in
           </a>
         </div>
 

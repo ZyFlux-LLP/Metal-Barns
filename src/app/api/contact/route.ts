@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
 
   await transporter.sendMail({
     from: `"MBI Website" <${process.env.SMTP_USER}>`,
-    to: process.env.CONTACT_TO ?? 'info@metalbarns.in',
+    to: (process.env.CONTACT_TO ?? 'avijit@metalbarns.in,jaya@metalbarns.in')
+      .split(',')
+      .map((a) => a.trim())
+      .filter(Boolean),
     replyTo: email || undefined,
     subject: `New Enquiry from ${name}${projectType ? ` — ${projectType}` : ''}`,
     html,

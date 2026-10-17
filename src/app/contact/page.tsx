@@ -4,7 +4,7 @@ import ContactForm from '@/components/ContactForm';
 export const metadata: Metadata = {
   title: 'Contact Us | Metal Barns India',
   description:
-    'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call +91 76200 44077 or email info@metalbarns.in.',
+    'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call +91 76200 44077 or email avijit@metalbarns.in or jaya@metalbarns.in.',
 };
 
 export default function ContactPage() {
@@ -99,8 +99,10 @@ export default function ContactPage() {
               </span>
               +91 76200 44077
             </a>
+            {['avijit@metalbarns.in', 'jaya@metalbarns.in'].map((email) => (
             <a
-              href="mailto:info@metalbarns.in"
+              key={email}
+              href={`mailto:${email}`}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -135,8 +137,9 @@ export default function ContactPage() {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                 </svg>
               </span>
-              info@metalbarns.in
+              {email}
             </a>
+            ))}
           </div>
         </div>
 
