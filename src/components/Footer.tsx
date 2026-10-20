@@ -64,6 +64,9 @@ export default function Footer() {
           <a href="mailto:avijit@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
             avijit@metalbarns.in
           </a>
+          <a href="mailto:info@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
+            info@metalbarns.in
+          </a>
           <a href="mailto:jaya@metalbarns.in" style={{ display: 'block', fontSize: '1rem' }}>
             jaya@metalbarns.in
           </a>

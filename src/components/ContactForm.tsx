@@ -13,16 +13,13 @@ const PROJECT_TYPES = [
   'Other',
 ];
 
+const EMPTY_FORM = { name: '', phone: '', email: '', projectType: '', message: '' };
+
 export default function ContactForm() {
   const [state, setState] = useState<FormState>('idle');
   const [errorMsg, setErrorMsg] = useState('');
-  const [form, setForm] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    projectType: '',
-    message: '',
-  });
+  const [submitted, setSubmitted] = useState<typeof EMPTY_FORM | null>(null);
+  const [form, setForm] = useState(EMPTY_FORM);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -47,8 +44,9 @@ export default function ContactForm() {
         throw new Error(data.error || 'Something went wrong');
       }
 
+      setSubmitted(form);
       setState('success');
-      setForm({ name: '', phone: '', email: '', projectType: '', message: '' });
+      setForm(EMPTY_FORM);
     } catch (err) {
       setState('error');
       setErrorMsg(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
@@ -111,6 +109,40 @@ export default function ContactForm() {
         <p style={{ color: 'var(--text-muted)', lineHeight: 1.7 }}>
           Thanks for reaching out. We&apos;ll get back to you shortly.
         </p>
+        {submitted && (
+          <dl
+            style={{
+              margin: '2rem 0 0',
+              textAlign: 'left',
+              display: 'grid',
+              gridTemplateColumns: 'max-content 1fr',
+              gap: '0.75rem 1.5rem',
+              padding: '1.5rem',
+              background: '#fff',
+              border: '1.5px solid var(--border-subtle)',
+              borderRadius: '8px',
+            }}
+          >
+            {(
+              [
+                ['Name', submitted.name],
+                ['Phone', submitted.phone],
+                ['Email', submitted.email],
+                ['Project Type', submitted.projectType],
+                ['Message', submitted.message],
+              ] as const
+            )
+              .filter(([, value]) => value)
+              .map(([label, value]) => (
+                <div key={label} style={{ display: 'contents' }}>
+                  <dt style={{ ...labelStyle, marginBottom: 0, paddingTop: '0.2rem' }}>{label}</dt>
+                  <dd style={{ margin: 0, color: 'var(--text-main)', lineHeight: 1.6, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere' }}>
+                    {value}
+                  </dd>
+                </div>
+              ))}
+          </dl>
+        )}
       </div>
     );
   }
