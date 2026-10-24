@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import ServicesSection from '@/components/ServicesSection';
 import FactoryFloorSection from '@/components/FactoryFloorSection';
 import MachinerySection from '@/components/MachinerySection';
 
-export const metadata: Metadata = {
-  title: 'Services | Metal Barns India',
-  description:
-    'EPC for steel structures, 360-degree compliance, layout design, and innovative engineering. Explore Metal Barns India\'s core capabilities.',
-};
+export const metadata: Metadata = pageMetadata(
+  'Services',
+  'EPC for steel structures, 360-degree compliance, layout design, and innovative engineering. Explore Metal Barns India\'s core capabilities.',
+  '/services'
+);
 
 export default function ServicesPage() {
   return (

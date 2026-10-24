@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import ProjectsByCategory from '@/components/ProjectsByCategory';
 
-export const metadata: Metadata = {
-  title: 'Project Showcase | Metal Barns India',
-  description:
-    'A selection of turnkey engineering and construction achievements by Metal Barns India — automobile showrooms, warehousing, manufacturing plants, and logistics centers.',
-};
+export const metadata: Metadata = pageMetadata(
+  'Project Showcase',
+  'A selection of turnkey engineering and construction achievements by Metal Barns India — automobile showrooms, warehousing, manufacturing plants, and logistics centers.',
+  '/projects'
+);
 
 export default function ProjectsPage() {
   return (

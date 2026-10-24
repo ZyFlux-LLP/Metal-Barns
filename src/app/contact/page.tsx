@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import ContactForm from '@/components/ContactForm';
 import { WhatsAppIcon, WHATSAPP_NUMBER, WHATSAPP_URL } from '@/components/WhatsAppButton';
 
-export const metadata: Metadata = {
-  title: 'Contact Us | Metal Barns India',
-  description:
-    'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call or WhatsApp +91 76200 44077, or email avijit@metalbarns.in or jaya@metalbarns.in.',
-};
+export const metadata: Metadata = pageMetadata(
+  'Contact Us',
+  'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call or WhatsApp +91 76200 44077, or email avijit@metalbarns.in or jaya@metalbarns.in.',
+  '/contact'
+);
 
 export default function ContactPage() {
   return (

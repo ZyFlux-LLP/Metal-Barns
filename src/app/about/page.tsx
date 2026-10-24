@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/site';
 import AboutSection from '@/components/AboutSection';
 import JourneySection from '@/components/JourneySection';
 import FoundersSection from '@/components/FoundersSection';
 import OfficesSection from '@/components/OfficesSection';
 
-export const metadata: Metadata = {
-  title: 'About MBI | Metal Barns India',
-  description:
-    'Learn about Metal Barns India — established 2014 in Nagpur, delivering pre-engineered steel building solutions with 42+ years of combined expertise. From 19 team members to 276+ today.',
-};
+export const metadata: Metadata = pageMetadata(
+  'About MBI',
+  'Learn about Metal Barns India — established 2014 in Nagpur, delivering pre-engineered steel building solutions with 42+ years of combined expertise. From 19 team members to 276+ today.',
+  '/about'
+);
 
 export default function AboutPage() {
   return (
