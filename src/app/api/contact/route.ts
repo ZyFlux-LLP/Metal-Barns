@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
 const esc = (v: unknown) =>
   String(v ?? '')
@@ -14,16 +14,6 @@ export async function POST(req: NextRequest) {
   if (!name || !phone || !message) {
     return NextResponse.json({ error: 'Name, phone, and message are required.' }, { status: 400 });
   }
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT ?? 587),
-    secure: process.env.SMTP_SECURE === 'true',
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
 
   const html = `
     <div style="font-family: sans-serif; max-width: 600px;">
@@ -40,9 +30,15 @@ export async function POST(req: NextRequest) {
     </div>
   `;
 
-  await transporter.sendMail({
-    from: `"MBI Website" <${process.env.SMTP_USER}>`,
-    to: (process.env.CONTACT_TO ?? 'avijit@metalbarns.in,info@metalbarns.in,jaya@metalbarns.in')
+  if (!process.env.RESEND_API_KEY) {
+    console.error('Contact form: RESEND_API_KEY is not set');
+    return NextResponse.json({ error: 'Email is not configured.' }, { status: 500 });
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const { error } = await resend.emails.send({
+    from: process.env.RESEND_FROM ?? 'MBI Website <website@metalbarns.in>',
+    to: (process.env.CONTACT_TO ?? 'avijit@metalbarns.in,jaya@metalbarns.in')
       .split(',')
       .map((a) => a.trim())
       .filter(Boolean),
@@ -50,6 +46,11 @@ export async function POST(req: NextRequest) {
     subject: `New Enquiry from ${name}${projectType ? ` — ${projectType}` : ''}`,
     html,
   });
+
+  if (error) {
+    console.error('Contact form: Resend error', error);
+    return NextResponse.json({ error: 'Could not send your enquiry. Please try again or call us.' }, { status: 502 });
+  }
 
   return NextResponse.json({ ok: true });
 }
