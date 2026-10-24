@@ -8,11 +8,61 @@ const esc = (v: unknown) =>
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
 
-export async function POST(req: NextRequest) {
-  const { name, phone, email, projectType, message } = await req.json();
+// Simple in-memory rate limit: 5 submissions per IP per 10 minutes
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_PER_WINDOW = 5;
+const hits = new Map<string, number[]>();
 
+function rateLimited(ip: string) {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) {
+    for (const [key, times] of hits) {
+      if (times.every((t) => now - t >= WINDOW_MS)) hits.delete(key);
+    }
+  }
+  return recent.length > MAX_PER_WINDOW;
+}
+
+const LIMITS = { name: 100, phone: 30, email: 200, projectType: 100, message: 5000 };
+
+// Returns a trimmed string within the length limit, '' when absent, or null when invalid
+const field = (v: unknown, max: number) => {
+  if (v == null || v === '') return '';
+  if (typeof v !== 'string') return null;
+  const s = v.trim();
+  return s.length > max ? null : s;
+};
+
+export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || req.headers.get('x-real-ip') || 'unknown';
+  if (rateLimited(ip)) {
+    return NextResponse.json({ error: 'Too many enquiries. Please try again later or call us.' }, { status: 429 });
+  }
+
+  let body: Record<string, unknown>;
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid request.' }, { status: 400 });
+  }
+
+  const name = field(body.name, LIMITS.name);
+  const phone = field(body.phone, LIMITS.phone);
+  const email = field(body.email, LIMITS.email);
+  const projectType = field(body.projectType, LIMITS.projectType);
+  const message = field(body.message, LIMITS.message);
+
+  if ([name, phone, email, projectType, message].some((v) => v === null)) {
+    return NextResponse.json({ error: 'One or more fields are too long.' }, { status: 400 });
+  }
   if (!name || !phone || !message) {
     return NextResponse.json({ error: 'Name, phone, and message are required.' }, { status: 400 });
+  }
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return NextResponse.json({ error: 'Please enter a valid email address.' }, { status: 400 });
   }
 
   const html = `
@@ -43,7 +93,7 @@ export async function POST(req: NextRequest) {
       .map((a) => a.trim())
       .filter(Boolean),
     replyTo: email || undefined,
-    subject: `New Enquiry from ${name}${projectType ? ` — ${projectType}` : ''}`,
+    subject: `New Enquiry from ${name}${projectType ? ` — ${projectType}` : ''}`.replace(/[\r\n]+/g, ' '),
     html,
   });
 
