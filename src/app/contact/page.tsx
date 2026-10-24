@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import ContactForm from '@/components/ContactForm';
+import { WhatsAppIcon, WHATSAPP_NUMBER, WHATSAPP_URL } from '@/components/WhatsAppButton';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Metal Barns India',
   description:
-    'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call +91 76200 44077 or email avijit@metalbarns.in or jaya@metalbarns.in.',
+    'Get in touch with Metal Barns India. Registered office in Nagpur, Maharashtra. Call or WhatsApp +91 76200 44077, or email avijit@metalbarns.in or jaya@metalbarns.in.',
 };
 
 export default function ContactPage() {
@@ -98,6 +99,37 @@ export default function ContactPage() {
                 </svg>
               </span>
               +91 76200 44077
+            </a>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`WhatsApp ${WHATSAPP_NUMBER}`}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.75rem',
+                fontWeight: 700,
+                fontSize: '1.1rem',
+                color: '#1DA851',
+                textDecoration: 'none',
+              }}
+            >
+              <span
+                style={{
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  background: '#25D366',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <WhatsAppIcon size={20} />
+              </span>
+              {WHATSAPP_NUMBER}
             </a>
             {['avijit@metalbarns.in', 'jaya@metalbarns.in'].map((email) => (
             <a
